@@ -54,9 +54,8 @@ public class Main {
          */
         ArrayList<Integer> listOfCelebrity = (ArrayList<Integer>) listGuest.clone();
         for(int guestIndice: listGuest) {
-            for(int indiceChecking = 0; indiceChecking < listGuest.size(); indiceChecking++){
-                int finalIndiceChecking = indiceChecking;
-                if(!Arrays.stream(guestRelation[guestIndice]).anyMatch(guest -> (guest == finalIndiceChecking || finalIndiceChecking == guestIndice))){
+            for(int indiceChecking : listGuest){
+                if(!Arrays.stream(guestRelation[guestIndice]).anyMatch(guest -> (guest == indiceChecking || indiceChecking == guestIndice))){
                     if(listOfCelebrity.contains(indiceChecking)) {
                         System.out.println(guestName[indiceChecking] + " ne peux pas etre car " + guestName[guestIndice] + " ne le connais pas");
                         listOfCelebrity.remove(Integer.valueOf(indiceChecking));
