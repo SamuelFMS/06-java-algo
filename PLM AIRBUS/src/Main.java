@@ -86,14 +86,15 @@ public class Main {
 
         planes.put(8742, plane1);
         planes.put(8772, plane2);
+        boolean quitProgram = false;
+        while (!quitProgram) {
         System.out.println("Que souhaitez vous effectuez");
         System.out.println("1- Afficher tous les avions");
         System.out.println("2- Afficher une liste d'avion a partir d'une recherce");
 
-
-        if(scanner.hasNextInt()) {
+            if (scanner.hasNextInt()) {
             int inputInt = scanner.nextInt();
-            switch(inputInt) {
+                switch (inputInt) {
                 case 1:
                     displayAllPlane();
                     break;
@@ -103,6 +104,9 @@ public class Main {
                     List<Integer> resSearch = searchPlane(search);
                     displayPlane(resSearch);
                     break;
+                    case 4:
+                        quitProgram = true;
+                        break;
                 default:
                     System.out.println("Votre nombre ne se trouve pas dans la liste");
                     break;
