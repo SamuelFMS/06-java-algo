@@ -5,12 +5,33 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
+    /**
+     * Liste de programme pour les avions
+     */
     protected static String[] programmes = {"A320", "A400M", "A380", "A300"};
+    /**
+     * Liste des differentes phases des avions
+     */
     protected static String[] phases = {"etudeFaisabilite", "conception", "definition", "construction", "enService", "cloture"};
+    /**
+     * Liste des differentes types d'avions
+     */
     protected static String[] types = {"fret", "transport", "passager", "militaire", "avionsAffaires"};
+    /**
+     * Dictionnaire d'avion avec l'id integer comme clé puis idProgramme idPhase idTypes
+     */
     protected static Map<Integer, int[]> planes = new HashMap<>();
+    /**
+     * Dictionnaire contenant comme clé l'id d'un avion avec une liste Object contenant un String Nom de la piece, un String category et un float price
+     */
     protected static Map<Integer, ArrayList<Object[]>> piecesPerPlane = new HashMap<>();
 
+    /**
+     * Returns a string of the desired length, truncated or padded with spaces.
+     * @param text
+     * @param len
+     * @return
+     */
     public static String formatString(String text, int len) {
         if (text.length() > len) {
             return text.substring(0, len);
@@ -22,6 +43,10 @@ public class Main {
         }
     }
 
+    /**
+     * Display a plane by is id
+     * @param idPlane
+     */
     public static void displayPlane(int idPlane) {
         int colId = 15; // Identifiant
         int colProgramme = 10; // Programme
@@ -40,6 +65,10 @@ public class Main {
         }
     }
 
+    /**
+     * Displays planes by their id
+     * @param idPlanes
+     */
     public static void displayPlane(List<Integer> idPlanes) {
         int colId = 15; // Identifiant
         int colProgramme = 10; // Programme
@@ -60,6 +89,11 @@ public class Main {
         }
     }
 
+    /**
+     * Create a piece with user input
+     * @param scanner
+     * @param idAvion
+     */
     public static void inputPiece(Scanner scanner, int idAvion) {
         System.out.println("Veuillez saisir le nom de la piece");
         String namePiece = scanner.nextLine();
@@ -93,6 +127,11 @@ public class Main {
 
     }
 
+    /**
+     * Remove a piece from a plane
+     * @param scanner
+     * @param idPlane
+     */
     public static void removePiece(Scanner scanner, int idPlane) {
         System.out.println(formatString("id", 4) + " | " + "Name");
         for (int i = 0; i < piecesPerPlane.get(idPlane).size(); i++) {
@@ -108,6 +147,11 @@ public class Main {
         }
     }
 
+    /**
+     * Display all piece of a plane and ask the user if they want to add or delete a piece
+     * @param scanner
+     * @param idPlane
+     */
     public static void displayAllPiece(Scanner scanner, int idPlane) {
         int colName = 15;
         int colCategory = 15;
@@ -155,10 +199,18 @@ public class Main {
         }
     }
 
+    /**
+     * Displays all the plane
+     */
     public static void displayAllPlane() {
         displayPlane(new ArrayList<>(planes.keySet()));
     }
 
+    /**
+     * Find all the planes that have the search String in their plane
+     * @param search
+     * @return
+     */
     public static List<Integer> searchPlane(String search) {
         ArrayList<Integer> res = new ArrayList<>();
         for (int idPlane : planes.keySet()) {
@@ -174,7 +226,10 @@ public class Main {
         return res;
     }
 
-
+    /**
+     * Main program ask what the user want to do
+     * @param args
+     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int[] plane1 = {1, 1, 1};
