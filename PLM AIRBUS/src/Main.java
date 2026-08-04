@@ -22,8 +22,23 @@ public class Main {
             return text;
         }
     }
-    public static void createAPlane(Scanner scanner) {
 
+    public static void displayPlane(int idPlane) {
+        int colId = 15; // Identifiant
+        int colProgramme = 10; // Programme
+        int colPhase = 20; // Phase
+        int colType = 15; // Type
+
+        System.out.println(formatString("Identifiant", colId) + " | " + formatString("Programme", colProgramme) + " | " + formatString("Phase", colPhase) + " | " + formatString("Type", colType));
+        if (planes.containsKey(idPlane)) {
+            int[] plane = planes.get(idPlane);
+            String programme = programmes[plane[0]];
+            String phase = phases[plane[1]];
+            String type = types[plane[2]];
+            System.out.println(formatString(String.valueOf(idPlane), colId) + " | " + formatString(programme, colProgramme) + " | " + formatString(phase, colPhase) + " | " + formatString(type, colType));
+        } else {
+            System.out.println("Impossible de trouver cette avion " + idPlane + "!");
+        }
     }
 
     public static void displayPlane(List<Integer> idPlanes){
