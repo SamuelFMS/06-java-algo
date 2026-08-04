@@ -1,9 +1,11 @@
+import java.util.Random;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     static int numberLine = 6;
     static int numberRow = 12;
-
+    static int numberOfBomb = 9;
 
     static StateCell[][] etatsCase = new StateCell[numberLine][numberRow];
 
@@ -13,6 +15,19 @@ public class Main {
                 etatsCase[x][y] = StateCell.Vide;
             }
         }
+    }
+    public static void generateBomb(Random random) {
+        int currentNumberOfBomb = 0;
+        while(currentNumberOfBomb < numberOfBomb) {
+            // pick a number between 0 and number-1
+            int randomLine = random.nextInt(numberLine);
+            int randomRow = random.nextInt(numberRow);
+            if (etatsCase[randomLine][randomRow] == StateCell.Vide) {
+                etatsCase[randomLine][randomRow] = StateCell.Bomb;
+                currentNumberOfBomb++;
+            }
+        }
+
     }
 
     public static void displayGame() {
@@ -45,7 +60,10 @@ public class Main {
                         System.out.print(" ");
                         break;
                     case Bomb:
-                        System.out.print(" ");
+                        System.out.print("b");
+                        break;
+                    case Checked:
+                        System.out.print("■");
                         break;
                     default:
                         System.out.print("default");
@@ -57,8 +75,11 @@ public class Main {
             currentRowIndex++;
         }
     }
+
     public static void main(String[] args) {
+        Random random = new Random();
         initGame();
+        generateBomb(random);
         displayGame();
     }
 }
