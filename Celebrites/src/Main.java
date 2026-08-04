@@ -49,8 +49,7 @@ public class Main {
             listGuest.add(x);
         }
         /**
-         * Première étape vérifier que tous le monde connais la célebrité
-         *
+         * First step is to verify that everyone knows the celebrity.
          */
         ArrayList<Integer> listOfCelebrity = (ArrayList<Integer>) listGuest.clone();
         for(int guestIndice: listGuest) {
@@ -65,7 +64,7 @@ public class Main {
         }
 
         /**
-         * Seconde étape verifier que les celebrités se connaissent seulement entres elles
+         * Second step verify that the celebrities know only each other.
          */
         for(int celebrityIndex: listOfCelebrity) {
             for(int relationIndex: guestRelation[celebrityIndex]) {
