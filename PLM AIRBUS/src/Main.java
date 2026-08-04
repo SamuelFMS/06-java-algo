@@ -190,6 +190,8 @@ public class Main {
         System.out.println("Que souhaitez vous effectuez");
         System.out.println("1- Afficher tous les avions");
         System.out.println("2- Afficher une liste d'avion a partir d'une recherce");
+            System.out.println("3- Voir les pieces pour un avion");
+            System.out.println("4- Arreter le programme");
 
             if (scanner.hasNextInt()) {
             int inputInt = scanner.nextInt();
@@ -203,6 +205,20 @@ public class Main {
                     List<Integer> resSearch = searchPlane(search);
                     displayPlane(resSearch);
                     break;
+                    case 3:
+                        displayAllPlane();
+                        System.out.println("Veuillez entrez l'identifiant de l'avion");
+                        if (scanner.hasNextInt()) {
+                            int planeKey = scanner.nextInt();
+                            if (planes.containsKey(planeKey)) {
+                                displayAllPiece(scanner, planeKey);
+                            } else {
+                                System.out.println("Nous n'avons pas trouvé d'avions avec cet identifiant " + planeKey);
+                            }
+                        } else {
+                            System.out.println("Un identifiant d'avion est attendu");
+                        }
+                        break;
                     case 4:
                         quitProgram = true;
                         break;
@@ -212,6 +228,7 @@ public class Main {
             }
         } else {
             System.out.println("Veuillez saisir un nombre");
+        }
         }
         scanner.close();
     }
