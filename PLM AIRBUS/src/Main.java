@@ -60,6 +60,39 @@ public class Main {
         }
     }
 
+    public static void inputPiece(Scanner scanner, int idAvion) {
+        System.out.println("Veuillez saisir le nom de la piece");
+        String namePiece = scanner.nextLine();
+        System.out.println("Veuillez saisir la categorie de la piece");
+        String categoryPiece = scanner.nextLine();
+        System.out.println("Veuillez saisir le prix de la piece");
+        boolean isInputFloat = false;
+        float pricePiece = 0;
+        while (!isInputFloat) {
+            if (scanner.hasNextFloat()) {
+                isInputFloat = true;
+                pricePiece = scanner.nextFloat();
+            } else {
+                System.out.println("Un float est attendu ici");
+                scanner.next();
+            }
+        }
+        Object[] res = new Object[3];
+        res[0] = namePiece;
+        res[1] = categoryPiece;
+        res[2] = pricePiece;
+
+        if (piecesPerPlane.containsKey(idAvion)) {
+            piecesPerPlane.get(idAvion).add(res);
+        } else {
+            ArrayList<Object[]> listPieces = new ArrayList<>();
+            listPieces.add(res);
+            piecesPerPlane.put(idAvion, listPieces);
+        }
+
+
+    }
+
     public static void displayAllPlane() {
         displayPlane(new ArrayList<>(planes.keySet()));
     }
