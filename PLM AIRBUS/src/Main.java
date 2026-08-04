@@ -177,11 +177,14 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int[] plane1 = {1,1,1};
-        int[] plane2 = {2,2,2};
-
+        int[] plane1 = {1, 1, 1};
+        int[] plane2 = {2, 2, 2};
+        Object[] piece1 = {"Aile droite 1425", "Aile droite", 5.05};
         planes.put(8742, plane1);
         planes.put(8772, plane2);
+        ArrayList<Object[]> plane1Piece = new ArrayList<>();
+        plane1Piece.add(piece1);
+        piecesPerPlane.put(8772, plane1Piece);
         boolean quitProgram = false;
         while (!quitProgram) {
         System.out.println("Que souhaitez vous effectuez");
