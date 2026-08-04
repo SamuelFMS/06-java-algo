@@ -187,24 +187,24 @@ public class Main {
         piecesPerPlane.put(8772, plane1Piece);
         boolean quitProgram = false;
         while (!quitProgram) {
-        System.out.println("Que souhaitez vous effectuez");
-        System.out.println("1- Afficher tous les avions");
-        System.out.println("2- Afficher une liste d'avion a partir d'une recherce");
+            System.out.println("Que souhaitez vous effectuez");
+            System.out.println("1- Afficher tous les avions");
+            System.out.println("2- Afficher une liste d'avion a partir d'une recherce");
             System.out.println("3- Voir les pieces pour un avion");
             System.out.println("4- Arreter le programme");
 
             if (scanner.hasNextInt()) {
-            int inputInt = scanner.nextInt();
+                int inputInt = scanner.nextInt();
                 switch (inputInt) {
-                case 1:
-                    displayAllPlane();
-                    break;
-                case 2:
-                    System.out.println("Veuillez entrez votre saisie");
-                    String search = scanner.next();
-                    List<Integer> resSearch = searchPlane(search);
-                    displayPlane(resSearch);
-                    break;
+                    case 1:
+                        displayAllPlane();
+                        break;
+                    case 2:
+                        System.out.println("Veuillez entrez votre saisie");
+                        String search = scanner.next();
+                        List<Integer> resSearch = searchPlane(search);
+                        displayPlane(resSearch);
+                        break;
                     case 3:
                         displayAllPlane();
                         System.out.println("Veuillez entrez l'identifiant de l'avion");
@@ -222,13 +222,13 @@ public class Main {
                     case 4:
                         quitProgram = true;
                         break;
-                default:
-                    System.out.println("Votre nombre ne se trouve pas dans la liste");
-                    break;
+                    default:
+                        System.out.println("Votre nombre ne se trouve pas dans la liste");
+                        break;
+                }
+            } else {
+                System.out.println("Veuillez saisir un nombre");
             }
-        } else {
-            System.out.println("Veuillez saisir un nombre");
-        }
         }
         scanner.close();
     }
