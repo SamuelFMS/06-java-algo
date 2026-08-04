@@ -87,8 +87,8 @@ public class Main {
             if (cell.length() == 2) {
                 if ((int) ('A') <= (int) cell.charAt(0) && (int) cell.charAt(0) < (int) ('A' + numberRow)) {
                     if((int)('0') <= (int)cell.charAt(1) && (int)cell.charAt(1) < (int)('0'+numberLine)) {
-                        result[0] =(int)cell.charAt(0)-(int)('A');
-                        result[1] = (int)cell.charAt(1)-(int)('0');
+                        result[0] = (int)cell.charAt(1)-(int)('0');
+                        result[1] =(int)cell.charAt(0)-(int)('A');
                         inputValid = true;
                     }
                 }
