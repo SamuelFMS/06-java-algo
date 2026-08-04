@@ -9,6 +9,7 @@ public class Main {
     protected static String[] phases = {"etudeFaisabilite", "conception", "definition", "construction", "enService", "cloture"};
     protected static String[] types = {"fret", "transport", "passager", "militaire", "avionsAffaires"};
     protected static Map<Integer, int[]> planes = new HashMap<>();
+    protected static Map<Integer, ArrayList<Object[]>> piecesPerPlane = new HashMap<>();
 
     public static String formatString(String text, int len) {
         if (text.length() > len) {
