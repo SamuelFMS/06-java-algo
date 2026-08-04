@@ -12,13 +12,11 @@ public class Main {
 
     public static String formatString(String text, int len) {
         if (text.length() > len) {
-            return text.substring(0,len);
-        }
-        else if (text.length() < len) {
-            String pattern = "%-"+len+"s";
+            return text.substring(0, len);
+        } else if (text.length() < len) {
+            String pattern = "%-" + len + "s";
             return String.format(pattern, text);
-        }
-        else {
+        } else {
             return text;
         }
     }
@@ -41,26 +39,20 @@ public class Main {
         }
     }
 
-    public static void displayPlane(List<Integer> idPlanes){
+    public static void displayPlane(List<Integer> idPlanes) {
         int colId = 15; // Identifiant
         int colProgramme = 10; // Programme
         int colPhase = 20; // Phase
         int colType = 15; // Type
 
-        System.out.println(formatString("Identifiant",colId) + " | " +
-                formatString("Programme", colProgramme) + " | " +
-                formatString("Phase", colPhase) + " | " +
-                formatString("Type",colType));
-        for(int idPlane: idPlanes) {
+        System.out.println(formatString("Identifiant", colId) + " | " + formatString("Programme", colProgramme) + " | " + formatString("Phase", colPhase) + " | " + formatString("Type", colType));
+        for (int idPlane : idPlanes) {
             if (planes.containsKey(idPlane)) {
                 int[] plane = planes.get(idPlane);
                 String programme = programmes[plane[0]];
                 String phase = phases[plane[1]];
                 String type = types[plane[2]];
-                System.out.println(formatString(String.valueOf(idPlane), colId) + " | " +
-                        formatString(programme, colProgramme) + " | " +
-                        formatString(phase, colPhase) + " | " +
-                        formatString(type, colType));
+                System.out.println(formatString(String.valueOf(idPlane), colId) + " | " + formatString(programme, colProgramme) + " | " + formatString(phase, colPhase) + " | " + formatString(type, colType));
             } else {
                 System.out.println("Impossible de trouver cette avion " + idPlane + "!");
             }
@@ -68,21 +60,18 @@ public class Main {
     }
 
     public static void displayAllPlane() {
-        displayPlane((List<Integer>) planes.keySet());
+        displayPlane(new ArrayList<>(planes.keySet()));
     }
 
-    public static List<Integer> searchPlane(String search){
+    public static List<Integer> searchPlane(String search) {
         ArrayList<Integer> res = new ArrayList<>();
-        for(int idPlane: planes.keySet()) {
+        for (int idPlane : planes.keySet()) {
             int[] plane = planes.get(idPlane);
             String stringIdPlane = String.valueOf(idPlane);
             String programme = programmes[plane[0]];
             String phase = phases[plane[1]];
             String type = types[plane[2]];
-            if(stringIdPlane.toUpperCase().contains(search.toUpperCase()) ||
-            programme.toUpperCase().contains(search.toUpperCase()) ||
-            phase.toUpperCase().contains(search.toUpperCase()) ||
-            type.toUpperCase().contains(search.toUpperCase())) {
+            if (stringIdPlane.toUpperCase().contains(search.toUpperCase()) || programme.toUpperCase().contains(search.toUpperCase()) || phase.toUpperCase().contains(search.toUpperCase()) || type.toUpperCase().contains(search.toUpperCase())) {
                 res.add(idPlane);
             }
         }
