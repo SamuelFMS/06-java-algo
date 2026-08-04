@@ -93,6 +93,53 @@ public class Main {
 
     }
 
+    public static void displayAllPiece(Scanner scanner, int idPlane) {
+        int colName = 15;
+        int colCategory = 15;
+        int colPrix = 6;
+        if (piecesPerPlane.containsKey(idPlane)) {
+            System.out.println("Affichage des pieces");
+            System.out.println(formatString("Name", colName) + " | " + formatString("Categorie", colCategory) + " | " + formatString("Prix", colPrix));
+            for (Object[] str : piecesPerPlane.get(idPlane)) {
+                System.out.print(formatString(String.valueOf(str[0]), colName) + " | ");
+                System.out.print(formatString(String.valueOf(str[1]), colName) + " | ");
+                System.out.println(formatString(String.valueOf(str[2]), colName));
+            }
+        } else {
+            System.out.println("Aucune piece trouver pour cette avion");
+        }
+        System.out.println("Que souhaitez vous faire ?");
+        System.out.println("1- Ajouter une piece a l'avion");
+        if (piecesPerPlane.containsKey(idPlane)) {
+            if (!piecesPerPlane.get(idPlane).isEmpty()) {
+                System.out.println("2- Retirer une piece a l'avion");
+            }
+        }
+        int saisieUtilisateur = 0;
+        while (saisieUtilisateur == 0) {
+            if (scanner.hasNextInt()) {
+                saisieUtilisateur = scanner.nextInt();
+            }
+            scanner.nextLine();
+        }
+        switch (saisieUtilisateur) {
+            case 1:
+                inputPiece(scanner, idPlane);
+                break;
+            case 2:
+                if (piecesPerPlane.containsKey(idPlane) && !piecesPerPlane.get(idPlane).isEmpty()) {
+                    removePiece(scanner, idPlane);
+                    break;
+                }
+
+                System.out.println("Cet avion ne contient pas de piece a supprimer");
+                break;
+            default:
+                System.out.println("Saisir un nombre du tableau");
+                break;
+        }
+    }
+
     public static void displayAllPlane() {
         displayPlane(new ArrayList<>(planes.keySet()));
     }
