@@ -93,6 +93,21 @@ public class Main {
 
     }
 
+    public static void removePiece(Scanner scanner, int idPlane) {
+        System.out.println(formatString("id", 4) + " | " + "Name");
+        for (int i = 0; i < piecesPerPlane.get(idPlane).size(); i++) {
+            System.out.println(formatString(String.valueOf(i), 4) + " | " + piecesPerPlane.get(idPlane).get(i)[0]);
+        }
+        System.out.println("Quel piece souhaitez vous supprimez");
+        if (scanner.hasNextInt()) {
+            int idPieceToDelete = scanner.nextInt();
+            if (idPieceToDelete >= 0 && idPieceToDelete < piecesPerPlane.get(idPlane).size()) {
+                piecesPerPlane.get(idPlane).remove(idPieceToDelete);
+            }
+
+        }
+    }
+
     public static void displayAllPiece(Scanner scanner, int idPlane) {
         int colName = 15;
         int colCategory = 15;
