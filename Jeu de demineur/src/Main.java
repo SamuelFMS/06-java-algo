@@ -23,7 +23,7 @@ public class Main {
     public static void initGame() {
         for (int x = 0; x < stateCells.length; x++) {
             for (int y = 0; y < stateCells[x].length; y++) {
-                stateCells[x][y] = StateCell.Vide;
+                stateCells[x][y] = StateCell.EMPTY;
             }
         }
     }
