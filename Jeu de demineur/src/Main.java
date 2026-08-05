@@ -46,8 +46,9 @@ public class Main {
         /**
          * Body
          */
-        int currentRowIndex = 0;
+        int currentLineIndex = 0;
         for (StateCell[] rowStateCell : stateCells) {
+            int currentRowIndex = 0;
             /**
              * Left index
              */
@@ -72,9 +73,10 @@ public class Main {
                         break;
                 }
                 System.out.print(" |");
+                currentRowIndex++;
             }
             System.out.println();
-            currentRowIndex++;
+            currentLineIndex++;
         }
     }
 
