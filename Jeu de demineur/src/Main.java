@@ -11,15 +11,37 @@ public class Main {
     public static final String ANSI_DARK_GREY = "\u001B[90m";
     public static final String ANSI_BLUE = "\u001B[34m";
 
+    /**
+     * Number of line on the game grid
+     */
     static int numberLine = 6;
+    /**
+     * Number of rows on the game grid
+     */
     static int numberRow = 12;
+    /**
+     * Number of bombs on the game grid
+     */
     static int numberOfBomb = 9;
 
+    /**
+     * Game grid represented by StateCell
+     */
     static StateCell[][] stateCells = new StateCell[numberLine][numberRow];
 
+    /**
+     * Placing mode place a flag or just reveal
+     */
     static PlacingMode currentPlacingMode = PlacingMode.REVEAL;
+    /**
+     * Number of flag available during the game
+     */
     static int numberOFFlagRemaining = numberOfBomb + 3;
 
+
+    /**
+     * Create a blank game grid
+     */
     public static void initGame() {
         for (int x = 0; x < stateCells.length; x++) {
             for (int y = 0; y < stateCells[x].length; y++) {
@@ -28,7 +50,11 @@ public class Main {
         }
     }
 
-
+    /**
+     * Generate all the bombs on the game grid
+     * It cannot generate a bomb beside the player start point
+     * @param random
+     */
     public static void generateBomb(Random random) {
         int currentNumberOfBomb = 0;
         while (currentNumberOfBomb < numberOfBomb) {
@@ -58,6 +84,11 @@ public class Main {
 
     }
 
+    /**
+     * Return blue if there is only 1, green if there is 2 and red if there is more
+     * @param numberOfBomb
+     * @return
+     */
     public static String colorByNumberOfBombs(int numberOfBomb) {
         String couleur;
 
@@ -71,8 +102,11 @@ public class Main {
         return couleur;
     }
 
+    /**
+     * Display the game board
+     */
     public static void displayGame() {
-        /**
+        /*
          * Header
          */
         System.out.print("  |");
@@ -82,17 +116,17 @@ public class Main {
         }
         System.out.println();
 
-        /**
+        /*
          * Body
          */
         int currentLineIndex = 0;
         for (StateCell[] rowStateCell : stateCells) {
             int currentRowIndex = 0;
-            /**
+            /*
              * Left index
              */
             System.out.print(currentLineIndex + " |");
-            /**
+            /*
              * Content
              */
             for (StateCell stateCell : rowStateCell) {
@@ -130,6 +164,12 @@ public class Main {
         }
     }
 
+    /**
+     * Input a cell or change mode
+     * @param scanner
+     * @param canSwitchMode
+     * @return
+     */
     public static int[] inputACell(Scanner scanner, boolean canSwitchMode) {
         int[] result = new int[2];
         System.out.println("Veuillez entrez une case (ex: B2)");
@@ -149,6 +189,9 @@ public class Main {
         return result;
     }
 
+    /**
+     * Display the current placing Mode
+     */
     private static void displayCurrentPlacingMode() {
         System.out.print("Vous êtes en mode " + (currentPlacingMode == PlacingMode.FLAGGING ? "\uD83D\uDEA9" : "\uD83D\uDD0D"));
         if (currentPlacingMode == PlacingMode.FLAGGING) {
@@ -157,6 +200,13 @@ public class Main {
         System.out.println(" Pour changer de mode entrez (s)");
     }
 
+    /**
+     * Verify the cell if it's correct it return true and store the value in an array result 0 corresponding the line and 1 the row
+     * @param cell
+     * @param result
+     * @param inputValid
+     * @return
+     */
     private static boolean isInputValidCell(String cell, int[] result, boolean inputValid) {
         cell = cell.toUpperCase();
         if (cell.length() == 2 && ('A') <= cell.charAt(0) && cell.charAt(0) < ('A' + numberRow)) {
@@ -170,10 +220,21 @@ public class Main {
         return inputValid;
     }
 
+    /**
+     * Return true if its a bomb
+     * @param stateCell
+     * @return
+     */
     public static boolean isABomb(StateCell stateCell) {
         return stateCell == StateCell.BOMB || (stateCell == StateCell.BOMB_EXPLODE || stateCell == StateCell.BOMB_FLAG);
     }
 
+    /**
+     * Count how many bombs there is in the 8 cells beside the input cell
+     * @param line
+     * @param row
+     * @return
+     */
     public static int numberOfBombBeside(int line, int row) {
         int numberOfBomb = 0;
         for (int neighbourRow = row - 1; neighbourRow <= row + 1; neighbourRow++) {
@@ -189,10 +250,21 @@ public class Main {
         return numberOfBomb;
     }
 
+    /**
+     * Return the string of the cell ex: A1
+     * @param line
+     * @param row
+     * @return
+     */
     public static String returnNameCell(int line, int row) {
         return ((char) ('A' + row) + "" + line);
     }
 
+    /**
+     * Reveal or flag a cell, if its empty it will reveal all the other beside if not flagged and will do the same for their neighbour
+     * @param line
+     * @param row
+     */
     public static void checkCell(int line, int row) {
         if (stateCells[line][row] == StateCell.EMPTY && currentPlacingMode == PlacingMode.REVEAL) {
             int bombeBeside = numberOfBombBeside(line, row);
@@ -225,6 +297,10 @@ public class Main {
         }
     }
 
+    /**
+     * Return true if the game is finished with a display if won or loose
+     * @return
+     */
     public static boolean isGameFinished() {
         boolean boardExplode = false;
         boolean allHaveNotBeenRevealed = false;
@@ -245,6 +321,10 @@ public class Main {
         return boardExplode || !allHaveNotBeenRevealed;
     }
 
+    /**
+     * Main method to play the game
+     * @param args
+     */
     public static void main(String[] args) {
         Random random = new Random();
         Scanner scanner = new Scanner(System.in);
