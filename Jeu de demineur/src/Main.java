@@ -174,6 +174,21 @@ public class Main {
     public static boolean isABomb(StateCell stateCell) {
         return stateCell == StateCell.BOMB || (stateCell == StateCell.BOMB_EXPLODE || stateCell == StateCell.BOMB_FLAG);
     }
+
+    public static int numberOfBombBeside(int line, int row){
+        int numberOfBomb = 0;
+        for(int neighbourRow = row-1; neighbourRow <= row+1; neighbourRow++){
+            for(int neighbourLine = line-1; neighbourLine <= line+1; neighbourLine++){
+                if(neighbourRow >= numberRow || neighbourRow < 0 || neighbourLine >= numberLine || neighbourLine < 0 || (neighbourLine==line && neighbourRow==row)){
+                    continue; // Outside of grill or same cell as the input not a neighbour
+                }
+                if(isABomb(stateCells[neighbourLine][neighbourRow])){
+                    numberOfBomb++;
+                }
+            }
+        }
+        return numberOfBomb;
+    }
     }
 
     public static void main(String[] args) {
