@@ -158,6 +158,18 @@ public class Main {
         System.out.println(" Pour changer de mode entrez (s)");
     }
 
+    private static boolean isInputValidCell(String cell, int[] result, boolean inputValid) {
+        cell = cell.toUpperCase();
+        if (cell.length() == 2 && ('A') <= cell.charAt(0) && cell.charAt(0) < ('A' + numberRow)) {
+                if (('0') <= cell.charAt(1) && cell.charAt(1) < ('0'+numberLine)) {
+                    result[0] = cell.charAt(1)-('0');
+                    result[1] =cell.charAt(0)-('A');
+                    inputValid = true;
+                }
+            }
+
+        return inputValid;
+    }
 
     public static boolean isABomb(StateCell stateCell) {
         return stateCell == StateCell.BOMB || (stateCell == StateCell.BOMB_EXPLODE || stateCell == StateCell.BOMB_FLAG);
