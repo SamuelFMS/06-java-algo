@@ -28,15 +28,31 @@ public class Main {
         }
     }
 
+
+
     public static void generateBomb(Random random) {
         int currentNumberOfBomb = 0;
         while (currentNumberOfBomb < numberOfBomb) {
             // pick a number between 0 and number-1
             int randomLine = random.nextInt(numberLine);
             int randomRow = random.nextInt(numberRow);
-            if (stateCells[randomLine][randomRow] == StateCell.Vide) {
-                stateCells[randomLine][randomRow] = StateCell.Bomb;
-                currentNumberOfBomb++;
+            if (stateCells[randomLine][randomRow] == StateCell.EMPTY) {
+                // Il est impossible de placer une bombe autour du point pour commencer
+                boolean besideStart = false;
+                for(int neighbourRow = randomRow-1; neighbourRow <= randomRow+1; neighbourRow++) {
+                    for (int neighbourLine = randomLine - 1; neighbourLine <= randomLine + 1; neighbourLine++) {
+                        if(neighbourRow >= numberRow || neighbourRow < 0 || neighbourLine >= numberLine || neighbourLine < 0){
+                            continue; // Outside of grill or same cell as the input not a neighbour
+                        }
+                        if (stateCells[neighbourLine][neighbourRow] == StateCell.EMPTY_CHECKED) {
+                            besideStart = true;
+                        }
+                    }
+                }
+                if (!besideStart) {
+                    stateCells[randomLine][randomRow] = StateCell.BOMB;
+                    currentNumberOfBomb++;
+                }
             }
         }
 
