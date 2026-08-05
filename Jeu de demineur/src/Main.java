@@ -17,6 +17,9 @@ public class Main {
 
     static StateCell[][] stateCells = new StateCell[numberLine][numberRow];
 
+    static PlacingMode currentPlacingMode = PlacingMode.REVEAL;
+    static int numberOFFlagRemaining = numberOfBomb + 3;
+
     public static void initGame() {
         for (int x = 0; x < stateCells.length; x++) {
             for (int y = 0; y < stateCells[x].length; y++) {
