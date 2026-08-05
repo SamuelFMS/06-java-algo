@@ -91,7 +91,7 @@ public class Main {
             /**
              * Left index
              */
-            System.out.print(currentRowIndex + " |");
+            System.out.print(currentLineIndex + " |");
             /**
              * Content
              */
