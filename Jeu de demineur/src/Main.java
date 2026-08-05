@@ -97,6 +97,10 @@ public class Main {
         return result;
     }
 
+    public static boolean isABomb(StateCell stateCell) {
+        return stateCell == StateCell.Bomb || (stateCell == StateCell.Explode || stateCell == StateCell.FlagBomb);
+    }
+
     public static void main(String[] args) {
         Random random = new Random();
         Scanner scanner = new Scanner(System.in);
