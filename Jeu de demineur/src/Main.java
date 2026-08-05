@@ -189,6 +189,10 @@ public class Main {
         }
         return numberOfBomb;
     }
+
+    public static String returnNameCell(int line, int row) {
+        return ((char)('A'+row) + "" + line);
+    }
     }
 
     public static void main(String[] args) {
