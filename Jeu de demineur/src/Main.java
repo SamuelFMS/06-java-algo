@@ -258,9 +258,27 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         initGame();
-        generateBomb(random);
+
+        /*
+         * First round is Special
+         */
         displayGame();
-        int[] res = inputACell(scanner);
+        int[] res = inputACell(scanner, false);
+        System.out.println(returnNameCell(res[0], res[1]));
+        stateCells[res[0]][res[1]] = StateCell.EMPTY_CHECKED;
+        generateBomb(random);
+        stateCells[res[0]][res[1]] = StateCell.EMPTY;
+        currentPlacingMode = PlacingMode.REVEAL;
+        checkCell(res[0], res[1]);
+        // End first Round
+
+        while (!isGameFinished()) {
+            displayGame();
+            int[] position = inputACell(scanner, true);
+            checkCell(position[0], position[1]);
+
+        }
+        displayGame();
 
         scanner.close();
     }
