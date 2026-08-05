@@ -230,6 +230,27 @@ public class Main {
             }
         }
     }
+
+    public static boolean isGameFinished(){
+        boolean boardExplode = false;
+        boolean allHaveNotBeenRevealed = false;
+        for (StateCell[] listStateCell: stateCells) {
+            for (StateCell stateCell : listStateCell) {
+                if(stateCell == StateCell.BOMB_EXPLODE) {
+                    boardExplode = true;
+                }
+                else if (stateCell == StateCell.EMPTY ||stateCell == StateCell.BOMB) {
+                    allHaveNotBeenRevealed = true;
+                }
+            }
+        }
+        if( boardExplode){
+            System.out.println("\uD83D\uDCA5 " + ANSI_RED + "Vous avez perdu, vous avez provoquer une explosion" + ANSI_RESET + "\uD83D\uDCA5");
+        }
+        else if(!allHaveNotBeenRevealed) {
+            System.out.println(ANSI_GREEN + "🎉 VICTOIRE ! Félicitations, vous avez déminé le terrain avec succès ! 🎉" + ANSI_RESET);
+        }
+        return boardExplode || !allHaveNotBeenRevealed;
     }
 
     public static void main(String[] args) {
