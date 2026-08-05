@@ -130,24 +130,34 @@ public class Main {
         }
     }
 
-    public static int[] inputACell(Scanner scanner) {
+    public static int[] inputACell(Scanner scanner, boolean canSwitchMode) {
         int[] result = new int[2];
         System.out.println("Veuillez entrez une case (ex: B2)");
+        if(canSwitchMode){
+            displayCurrentPlacingMode();
+        }
         boolean inputValid = false;
         while (!inputValid) {
             String cell = scanner.next();
-            if (cell.length() == 2) {
-                if ((int) ('A') <= (int) cell.charAt(0) && (int) cell.charAt(0) < (int) ('A' + numberRow)) {
-                    if((int)('0') <= (int)cell.charAt(1) && (int)cell.charAt(1) < (int)('0'+numberLine)) {
-                        result[0] = (int)cell.charAt(1)-(int)('0');
-                        result[1] =(int)cell.charAt(0)-(int)('A');
-                        inputValid = true;
-                    }
-                }
+            if(cell.toLowerCase().equals("s") && canSwitchMode){
+                currentPlacingMode = currentPlacingMode == PlacingMode.FLAGGING? PlacingMode.REVEAL:PlacingMode.FLAGGING;
+                displayCurrentPlacingMode();
+            }
+            else {
+                inputValid = isInputValidCell(cell, result, inputValid);
             }
         }
         return result;
     }
+
+    private static void displayCurrentPlacingMode() {
+        System.out.print("Vous êtes en mode " + (currentPlacingMode == PlacingMode.FLAGGING ? "\uD83D\uDEA9":"\uD83D\uDD0D"));
+        if(currentPlacingMode == PlacingMode.FLAGGING) {
+            System.out.print(" ("+numberOFFlagRemaining+ " Restants)");
+        }
+        System.out.println(" Pour changer de mode entrez (s)");
+    }
+
 
     public static boolean isABomb(StateCell stateCell) {
         return stateCell == StateCell.BOMB || (stateCell == StateCell.BOMB_EXPLODE || stateCell == StateCell.BOMB_FLAG);
