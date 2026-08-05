@@ -27,8 +27,12 @@ public class Main {
         return listOFWords[random.nextInt(listOFWords.length)];
     }
 
+    public static String hideString(String wordToHide){
+        return wordToHide.replaceAll(".", "_");
+    }
     public static void main(String[] args) {
         Random random = new Random();
-        System.out.println(randomWord(random));
+        String wordToFind = randomWord(random);
+        System.out.println(hideString(wordToFind));
     }
 }
