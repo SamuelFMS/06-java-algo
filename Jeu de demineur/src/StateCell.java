@@ -1,10 +1,10 @@
 public enum StateCell {
-    Vide, // ⬛
-    FlagVide, // 🚩
-    Checked, // 🟩
-    BombBeside, // 0 - 9
+    EMPTY, // ⬛
+    EMPTY_FLAG, // 🚩
+    EMPTY_CHECKED, // 🟩
+    BOMB_BESIDE, // 0 - 9
 
-    Bomb, // ⬛
-    FlagBomb, // 🚩
-    Explode // 💥
+    BOMB, // ⬛
+    BOMB_FLAG, // 🚩
+    BOMB_EXPLODE // 💥
 }

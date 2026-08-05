@@ -59,17 +59,28 @@ public class Main {
             for (StateCell stateCell : rowStateCell) {
                 System.out.print(" ");
                 switch (stateCell) {
-                    case Vide:
+                    case EMPTY:
+                    case BOMB:
+                        System.out.print(ANSI_DARK_GREY +"■"+ANSI_RESET);
+                        break;
+                    case EMPTY_CHECKED:
                         System.out.print(" ");
                         break;
-                    case Bomb:
-                        System.out.print("b");
+                    case BOMB_BESIDE:
+                        int nombreDeBombe = numberOfBombBeside(currentLineIndex,currentRowIndex);
+                        System.out.print(colorByNumberOfBombs(nombreDeBombe) + nombreDeBombe + ANSI_RESET);
                         break;
-                    case Checked:
-                        System.out.print("■");
+                    case BOMB_FLAG:
+                        System.out.print(ANSI_RED + "⚑" + ANSI_RESET);
+                        break;
+                    case EMPTY_FLAG:
+                        System.out.print(ANSI_RED + "⚐" + ANSI_RESET);
+                        break;
+                    case BOMB_EXPLODE:
+                        System.out.print(ANSI_RED + "✴" + ANSI_RESET);
                         break;
                     default:
-                        System.out.print("default");
+                        System.out.print(stateCell);
                         break;
                 }
                 System.out.print(" |");
@@ -100,7 +111,8 @@ public class Main {
     }
 
     public static boolean isABomb(StateCell stateCell) {
-        return stateCell == StateCell.Bomb || (stateCell == StateCell.Explode || stateCell == StateCell.FlagBomb);
+        return stateCell == StateCell.BOMB || (stateCell == StateCell.BOMB_EXPLODE || stateCell == StateCell.BOMB_FLAG);
+    }
     }
 
     public static void main(String[] args) {
