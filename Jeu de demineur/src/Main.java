@@ -193,6 +193,43 @@ public class Main {
     public static String returnNameCell(int line, int row) {
         return ((char)('A'+row) + "" + line);
     }
+
+    public static void checkCell(int line, int row){
+        if (stateCells[line][row] == StateCell.EMPTY && currentPlacingMode == PlacingMode.REVEAL) {
+            int bombeBeside = numberOfBombBeside(line, row);
+            if(bombeBeside == 0) {
+                stateCells[line][row] = StateCell.EMPTY_CHECKED;
+            }
+            else {
+                stateCells[line][row] = StateCell.BOMB_BESIDE;
+                return;
+            }
+            for(int neighbourRow = row-1; neighbourRow <= row+1; neighbourRow++) {
+                for (int neighbourLine = line - 1; neighbourLine <= line + 1; neighbourLine++) {
+                    if(neighbourRow >= numberRow || neighbourRow < 0 || neighbourLine >= numberLine || neighbourLine < 0 || (neighbourLine==line && neighbourRow==row)) {
+                        continue;
+                    }
+                    checkCell(neighbourLine, neighbourRow);
+                }
+            }
+        }
+        else if(currentPlacingMode == PlacingMode.FLAGGING && numberOFFlagRemaining <= 0) {
+            System.out.println("Impossible de placer un drapeau! Il vous en reste 0");
+        }
+        else if (stateCells[line][row] == StateCell.EMPTY && currentPlacingMode == PlacingMode.FLAGGING){
+            stateCells[line][row] = StateCell.EMPTY_FLAG;
+            numberOFFlagRemaining--;
+        }
+        else if(stateCells[line][row] == StateCell.BOMB){
+            if(currentPlacingMode == PlacingMode.FLAGGING) {
+                stateCells[line][row] = StateCell.BOMB_FLAG;
+                numberOFFlagRemaining--;
+            }
+            else {
+                stateCells[line][row] = StateCell.BOMB_EXPLODE;
+            }
+        }
+    }
     }
 
     public static void main(String[] args) {
