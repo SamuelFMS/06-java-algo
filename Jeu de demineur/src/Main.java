@@ -58,6 +58,19 @@ public class Main {
 
     }
 
+    public static String colorByNumberOfBombs(int numberOfBomb){
+        String couleur;
+
+        if (numberOfBomb == 1) {
+            couleur = ANSI_BLUE;
+        } else if (numberOfBomb == 2) {
+            couleur = ANSI_GREEN;
+        } else {
+            couleur = ANSI_RED; // Gère 3, 4, 5, etc.
+        }
+        return couleur;
+    }
+
     public static void displayGame() {
         /**
          * Header
