@@ -11,8 +11,8 @@ public class Main {
     public static final String ANSI_DARK_GREY = "\u001B[90m";
     public static final String ANSI_BLUE = "\u001B[34m";
 
-    static int numberLine = 6; 
-    static int numberRow = 12; 
+    static int numberLine = 6;
+    static int numberRow = 12;
     static int numberOfBomb = 9;
 
     static StateCell[][] stateCells = new StateCell[numberLine][numberRow];
@@ -29,7 +29,6 @@ public class Main {
     }
 
 
-
     public static void generateBomb(Random random) {
         int currentNumberOfBomb = 0;
         while (currentNumberOfBomb < numberOfBomb) {
@@ -39,13 +38,14 @@ public class Main {
             if (stateCells[randomLine][randomRow] == StateCell.EMPTY) {
                 // Il est impossible de placer une bombe autour du point pour commencer
                 boolean besideStart = false;
-                for(int neighbourRow = randomRow-1; neighbourRow <= randomRow+1; neighbourRow++) {
+                for (int neighbourRow = randomRow - 1; neighbourRow <= randomRow + 1; neighbourRow++) {
                     for (int neighbourLine = randomLine - 1; neighbourLine <= randomLine + 1; neighbourLine++) {
-                        if(neighbourRow >= numberRow || neighbourRow < 0 || neighbourLine >= numberLine || neighbourLine < 0){
+                        if (neighbourRow >= numberRow || neighbourRow < 0 || neighbourLine >= numberLine || neighbourLine < 0) {
                             continue; // Outside of grill or same cell as the input not a neighbour
                         }
                         if (stateCells[neighbourLine][neighbourRow] == StateCell.EMPTY_CHECKED) {
                             besideStart = true;
+                            break;
                         }
                     }
                 }
@@ -58,7 +58,7 @@ public class Main {
 
     }
 
-    public static String colorByNumberOfBombs(int numberOfBomb){
+    public static String colorByNumberOfBombs(int numberOfBomb) {
         String couleur;
 
         if (numberOfBomb == 1) {
@@ -100,13 +100,13 @@ public class Main {
                 switch (stateCell) {
                     case EMPTY:
                     case BOMB:
-                        System.out.print(ANSI_DARK_GREY +"■"+ANSI_RESET);
+                        System.out.print(ANSI_DARK_GREY + "■" + ANSI_RESET);
                         break;
                     case EMPTY_CHECKED:
                         System.out.print(" ");
                         break;
                     case BOMB_BESIDE:
-                        int nombreDeBombe = numberOfBombBeside(currentLineIndex,currentRowIndex);
+                        int nombreDeBombe = numberOfBombBeside(currentLineIndex, currentRowIndex);
                         System.out.print(colorByNumberOfBombs(nombreDeBombe) + nombreDeBombe + ANSI_RESET);
                         break;
                     case BOMB_FLAG:
@@ -133,17 +133,16 @@ public class Main {
     public static int[] inputACell(Scanner scanner, boolean canSwitchMode) {
         int[] result = new int[2];
         System.out.println("Veuillez entrez une case (ex: B2)");
-        if(canSwitchMode){
+        if (canSwitchMode) {
             displayCurrentPlacingMode();
         }
         boolean inputValid = false;
         while (!inputValid) {
             String cell = scanner.next();
-            if(cell.toLowerCase().equals("s") && canSwitchMode){
-                currentPlacingMode = currentPlacingMode == PlacingMode.FLAGGING? PlacingMode.REVEAL:PlacingMode.FLAGGING;
+            if (cell.equalsIgnoreCase("s") && canSwitchMode) {
+                currentPlacingMode = currentPlacingMode == PlacingMode.FLAGGING ? PlacingMode.REVEAL : PlacingMode.FLAGGING;
                 displayCurrentPlacingMode();
-            }
-            else {
+            } else {
                 inputValid = isInputValidCell(cell, result, inputValid);
             }
         }
@@ -151,9 +150,9 @@ public class Main {
     }
 
     private static void displayCurrentPlacingMode() {
-        System.out.print("Vous êtes en mode " + (currentPlacingMode == PlacingMode.FLAGGING ? "\uD83D\uDEA9":"\uD83D\uDD0D"));
-        if(currentPlacingMode == PlacingMode.FLAGGING) {
-            System.out.print(" ("+numberOFFlagRemaining+ " Restants)");
+        System.out.print("Vous êtes en mode " + (currentPlacingMode == PlacingMode.FLAGGING ? "\uD83D\uDEA9" : "\uD83D\uDD0D"));
+        if (currentPlacingMode == PlacingMode.FLAGGING) {
+            System.out.print(" (" + numberOFFlagRemaining + " Restants)");
         }
         System.out.println(" Pour changer de mode entrez (s)");
     }
@@ -161,12 +160,12 @@ public class Main {
     private static boolean isInputValidCell(String cell, int[] result, boolean inputValid) {
         cell = cell.toUpperCase();
         if (cell.length() == 2 && ('A') <= cell.charAt(0) && cell.charAt(0) < ('A' + numberRow)) {
-                if (('0') <= cell.charAt(1) && cell.charAt(1) < ('0'+numberLine)) {
-                    result[0] = cell.charAt(1)-('0');
-                    result[1] =cell.charAt(0)-('A');
-                    inputValid = true;
-                }
+            if (('0') <= cell.charAt(1) && cell.charAt(1) < ('0' + numberLine)) {
+                result[0] = cell.charAt(1) - ('0');
+                result[1] = cell.charAt(0) - ('A');
+                inputValid = true;
             }
+        }
 
         return inputValid;
     }
@@ -175,14 +174,14 @@ public class Main {
         return stateCell == StateCell.BOMB || (stateCell == StateCell.BOMB_EXPLODE || stateCell == StateCell.BOMB_FLAG);
     }
 
-    public static int numberOfBombBeside(int line, int row){
+    public static int numberOfBombBeside(int line, int row) {
         int numberOfBomb = 0;
-        for(int neighbourRow = row-1; neighbourRow <= row+1; neighbourRow++){
-            for(int neighbourLine = line-1; neighbourLine <= line+1; neighbourLine++){
-                if(neighbourRow >= numberRow || neighbourRow < 0 || neighbourLine >= numberLine || neighbourLine < 0 || (neighbourLine==line && neighbourRow==row)){
+        for (int neighbourRow = row - 1; neighbourRow <= row + 1; neighbourRow++) {
+            for (int neighbourLine = line - 1; neighbourLine <= line + 1; neighbourLine++) {
+                if (neighbourRow >= numberRow || neighbourRow < 0 || neighbourLine >= numberLine || neighbourLine < 0 || (neighbourLine == line && neighbourRow == row)) {
                     continue; // Outside of grill or same cell as the input not a neighbour
                 }
-                if(isABomb(stateCells[neighbourLine][neighbourRow])){
+                if (isABomb(stateCells[neighbourLine][neighbourRow])) {
                     numberOfBomb++;
                 }
             }
@@ -191,63 +190,56 @@ public class Main {
     }
 
     public static String returnNameCell(int line, int row) {
-        return ((char)('A'+row) + "" + line);
+        return ((char) ('A' + row) + "" + line);
     }
 
-    public static void checkCell(int line, int row){
+    public static void checkCell(int line, int row) {
         if (stateCells[line][row] == StateCell.EMPTY && currentPlacingMode == PlacingMode.REVEAL) {
             int bombeBeside = numberOfBombBeside(line, row);
-            if(bombeBeside == 0) {
+            if (bombeBeside == 0) {
                 stateCells[line][row] = StateCell.EMPTY_CHECKED;
-            }
-            else {
+            } else {
                 stateCells[line][row] = StateCell.BOMB_BESIDE;
                 return;
             }
-            for(int neighbourRow = row-1; neighbourRow <= row+1; neighbourRow++) {
+            for (int neighbourRow = row - 1; neighbourRow <= row + 1; neighbourRow++) {
                 for (int neighbourLine = line - 1; neighbourLine <= line + 1; neighbourLine++) {
-                    if(neighbourRow >= numberRow || neighbourRow < 0 || neighbourLine >= numberLine || neighbourLine < 0 || (neighbourLine==line && neighbourRow==row)) {
+                    if (neighbourRow >= numberRow || neighbourRow < 0 || neighbourLine >= numberLine || neighbourLine < 0 || (neighbourLine == line && neighbourRow == row)) {
                         continue;
                     }
                     checkCell(neighbourLine, neighbourRow);
                 }
             }
-        }
-        else if(currentPlacingMode == PlacingMode.FLAGGING && numberOFFlagRemaining <= 0) {
+        } else if (currentPlacingMode == PlacingMode.FLAGGING && numberOFFlagRemaining <= 0) {
             System.out.println("Impossible de placer un drapeau! Il vous en reste 0");
-        }
-        else if (stateCells[line][row] == StateCell.EMPTY && currentPlacingMode == PlacingMode.FLAGGING){
+        } else if (stateCells[line][row] == StateCell.EMPTY && currentPlacingMode == PlacingMode.FLAGGING) {
             stateCells[line][row] = StateCell.EMPTY_FLAG;
             numberOFFlagRemaining--;
-        }
-        else if(stateCells[line][row] == StateCell.BOMB){
-            if(currentPlacingMode == PlacingMode.FLAGGING) {
+        } else if (stateCells[line][row] == StateCell.BOMB) {
+            if (currentPlacingMode == PlacingMode.FLAGGING) {
                 stateCells[line][row] = StateCell.BOMB_FLAG;
                 numberOFFlagRemaining--;
-            }
-            else {
+            } else {
                 stateCells[line][row] = StateCell.BOMB_EXPLODE;
             }
         }
     }
 
-    public static boolean isGameFinished(){
+    public static boolean isGameFinished() {
         boolean boardExplode = false;
         boolean allHaveNotBeenRevealed = false;
-        for (StateCell[] listStateCell: stateCells) {
+        for (StateCell[] listStateCell : stateCells) {
             for (StateCell stateCell : listStateCell) {
-                if(stateCell == StateCell.BOMB_EXPLODE) {
+                if (stateCell == StateCell.BOMB_EXPLODE) {
                     boardExplode = true;
-                }
-                else if (stateCell == StateCell.EMPTY ||stateCell == StateCell.BOMB) {
+                } else if (stateCell == StateCell.EMPTY || stateCell == StateCell.BOMB) {
                     allHaveNotBeenRevealed = true;
                 }
             }
         }
-        if( boardExplode){
+        if (boardExplode) {
             System.out.println("\uD83D\uDCA5 " + ANSI_RED + "Vous avez perdu, vous avez provoquer une explosion" + ANSI_RESET + "\uD83D\uDCA5");
-        }
-        else if(!allHaveNotBeenRevealed) {
+        } else if (!allHaveNotBeenRevealed) {
             System.out.println(ANSI_GREEN + "🎉 VICTOIRE ! Félicitations, vous avez déminé le terrain avec succès ! 🎉" + ANSI_RESET);
         }
         return boardExplode || !allHaveNotBeenRevealed;
