@@ -4,8 +4,15 @@ import java.util.Scanner;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    static int numberLine = 6;
-    static int numberRow = 12;
+    // Codes de couleur ANSI
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_DARK_GREY = "\u001B[90m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+
+    static int numberLine = 6; 
+    static int numberRow = 12; 
     static int numberOfBomb = 9;
 
     static StateCell[][] stateCells = new StateCell[numberLine][numberRow];
