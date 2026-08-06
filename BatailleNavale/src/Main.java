@@ -4,14 +4,20 @@ import java.util.Scanner;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static int sizeGrid = 3;
+    public static int sizeGrid = 5;
     public static int numberOfBoat = 3;
-    public static int sizeOfBoat = 1;
+    public static int sizeOfBoat = 2;
     public static Object[][][] grid = new Object[sizeGrid][sizeGrid][];
 
     public static void displayCell(Object[] cell) {
         if (cell[0] == StateCell.EMPTY) {
-            System.out.print(" ");
+            if (cell[1] != null) {
+                // System.out.print(cell[1]); See the all the boats
+                System.out.print(" ");
+            }
+            else {
+                System.out.print(" ");
+            }
         } else if (cell[0] == StateCell.HIT) {
             if (cell[1] != null) {
                 System.out.print("T");
@@ -77,10 +83,20 @@ public class Main {
         int numberOfBoatGenerated = 0;
         while (numberOfBoatGenerated < numberOfBoat) {
             // Generation aleatoire de la position
-            int line = random.nextInt(sizeGrid);
-            int row = random.nextInt(sizeGrid);
-            if (grid[line][row][1] == null) {
-                grid[line][row][1] = numberOfBoatGenerated;
+            boolean isVertical = random.nextBoolean();
+            int line = random.nextInt(sizeGrid - (isVertical?(sizeOfBoat -1):0));
+            int row = random.nextInt(sizeGrid- (isVertical?0:(sizeOfBoat -1)));
+            // Verify if the boat doesn't overlaps
+            boolean boatOverlap = false;
+            for (int currentSize = 0; currentSize < sizeOfBoat; currentSize++) {
+                if(grid[line+(isVertical?currentSize:0)][row+(isVertical?0:currentSize)][1] != null){
+                    boatOverlap = true;
+                }
+            }
+            if (!boatOverlap) {
+                for (int currentSize = 0; currentSize < sizeOfBoat; currentSize++) {
+                    grid[line+(isVertical?currentSize:0)][row+(isVertical?0:currentSize)][1] = numberOfBoatGenerated;
+                }
                 numberOfBoatGenerated++;
             }
         }
