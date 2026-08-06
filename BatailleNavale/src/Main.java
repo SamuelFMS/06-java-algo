@@ -8,23 +8,36 @@ public class Main {
     public static int numberOfBoat = 3;
     public static int sizeOfBoat = 2;
     public static Object[][][] grid = new Object[sizeGrid][sizeGrid][];
+    public static Object[][][] ships = new Object[numberOfBoat][sizeOfBoat][];
 
     public static void displayCell(Object[] cell) {
         if (cell[0] == StateCell.EMPTY) {
             if (cell[1] != null) {
-                // System.out.print(cell[1]); See the all the boats
-                System.out.print(" ");
-            }
-            else {
+                System.out.print(cell[1]);// See the all the boats
+                //System.out.print(" ");
+            } else {
                 System.out.print(" ");
             }
         } else if (cell[0] == StateCell.HIT) {
             if (cell[1] != null) {
-                System.out.print("T");
+                if (isShipSinked(ships[(int) cell[1]])) {
+                    System.out.print("~");
+                } else {
+                    System.out.print("T");
+                }
             } else {
                 System.out.print("X");
             }
         }
+    }
+
+    public static boolean isShipSinked(Object[][] ships) {
+        for (Object[] cell : ships) {
+            if (cell[0] == StateCell.EMPTY) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static void displayGrid() {
@@ -84,18 +97,20 @@ public class Main {
         while (numberOfBoatGenerated < numberOfBoat) {
             // Generation aleatoire de la position
             boolean isVertical = random.nextBoolean();
-            int line = random.nextInt(sizeGrid - (isVertical?(sizeOfBoat -1):0));
-            int row = random.nextInt(sizeGrid- (isVertical?0:(sizeOfBoat -1)));
+            int line = random.nextInt(sizeGrid - (isVertical ? (sizeOfBoat - 1) : 0));
+            int row = random.nextInt(sizeGrid - (isVertical ? 0 : (sizeOfBoat - 1)));
             // Verify if the boat doesn't overlaps
             boolean boatOverlap = false;
             for (int currentSize = 0; currentSize < sizeOfBoat; currentSize++) {
-                if(grid[line+(isVertical?currentSize:0)][row+(isVertical?0:currentSize)][1] != null){
+                if (grid[line + (isVertical ? currentSize : 0)][row + (isVertical ? 0 : currentSize)][1] != null) {
                     boatOverlap = true;
+                    break;
                 }
             }
             if (!boatOverlap) {
                 for (int currentSize = 0; currentSize < sizeOfBoat; currentSize++) {
-                    grid[line+(isVertical?currentSize:0)][row+(isVertical?0:currentSize)][1] = numberOfBoatGenerated;
+                    grid[line + (isVertical ? currentSize : 0)][row + (isVertical ? 0 : currentSize)][1] = numberOfBoatGenerated;
+                    ships[numberOfBoatGenerated][currentSize] = grid[line + (isVertical ? currentSize : 0)][row + (isVertical ? 0 : currentSize)];
                 }
                 numberOfBoatGenerated++;
             }
@@ -127,12 +142,11 @@ public class Main {
     }
 
     public static void shoot(int[] pos) {
-        if(grid[pos[0]][pos[1]][0] == StateCell.EMPTY) {
+        if (grid[pos[0]][pos[1]][0] == StateCell.EMPTY) {
             grid[pos[0]][pos[1]][0] = StateCell.HIT;
-            if(grid[pos[0]][pos[1]][1] != null) {
+            if (grid[pos[0]][pos[1]][1] != null) {
                 System.out.println("Vous avez touché un bateau");
-            }
-            else{
+            } else {
                 System.out.println("Dans l'eau");
             }
         } else {
@@ -140,12 +154,13 @@ public class Main {
         }
     }
 
-    public static boolean isGameFinished(){
+    public static boolean isGameFinished() {
         boolean finished = true;
-        for (Object[][] line: grid) {
-            for(Object[] cell: line){
-                if(cell[1] != null && cell[0] == StateCell.EMPTY){
+        for (Object[][] line : grid) {
+            for (Object[] cell : line) {
+                if (cell[1] != null && cell[0] == StateCell.EMPTY) {
                     finished = false;
+                    break;
                 }
             }
         }
