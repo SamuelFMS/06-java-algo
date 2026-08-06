@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -20,17 +21,6 @@ public class Main {
         }
     }
 
-    /**
-     * +---+---+---+  // line1
-     * | A | B | C |  // line2
-     * +---+---+---+---+  // delimiter
-     * | 1 |   |   |   |
-     * +---+---+---+---+  // delimiter
-     * | 2 |   |   |   |
-     * +---+---+---+---+  // delimiter
-     * | 3 |   |   |   |
-     * +---+---+---+---+  // delimiter
-     */
     public static void displayGrid() {
         /*
             Header
@@ -96,11 +86,44 @@ public class Main {
         }
     }
 
+    private static boolean isInputValidCell(String cell, int[] result) {
+        boolean inputValid = false;
+        cell = cell.toUpperCase();
+        if (cell.length() == 2 && ('A') <= cell.charAt(0) && cell.charAt(0) < ('A' + sizeGrid)) {
+            if (('1') <= cell.charAt(1) && cell.charAt(1) < ('1' + sizeGrid)) {
+                result[0] = cell.charAt(1) - ('1');
+                result[1] = cell.charAt(0) - ('A');
+                inputValid = true;
+            }
+        }
+        return inputValid;
+    }
+
+    public static int[] inputACell(Scanner scanner) {
+        int[] result = new int[2];
+        System.out.println("Veuillez entrez une case (ex: B2)");
+        boolean inputValid = false;
+        while (!inputValid) {
+            String cell = scanner.next();
+            inputValid = isInputValidCell(cell, result);
+        }
+        return result;
+    }
+
+    public static void shoot(int[] pos) {
+        grid[pos[0]][pos[1]][0] = StateCell.HIT;
+    }
+
     public static void main(String[] args) {
         Random random = new Random();
+        Scanner scanner = new Scanner(System.in);
 
         initGrid();
         generateBoat(random);
         displayGrid();
+        shoot(inputACell(scanner));
+        displayGrid();
+
+        scanner.close();
     }
 }
