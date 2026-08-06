@@ -6,7 +6,8 @@ import java.util.Random;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static String[] listOFWords = {
+    public static int numberOfTry = 6;
+    protected static String[] listOFWords = {
             "ACCORD", "ACTEUR", "AGENDA", "AGNEAU", "ALBUM", "ALERTE", "AMANDE", "AMICAL", "ANIMAL", "ANANAS",
             "ARBRE", "ARDOISE", "ARGENT", "ARMOIRE", "ASTUCE", "AVION", "AVOCAT", "BALLE", "BANANE", "BARQUE",
             "BASSIN", "BATEAU", "BICYCLETTE", "BIJOU", "BILLET", "BOCAL", "BOUGIE", "BOUTEILLE", "BOUTON", "BRANCHE",
