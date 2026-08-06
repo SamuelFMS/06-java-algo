@@ -14,20 +14,20 @@ public class Main {
     /**
      * Number of line on the game grid
      */
-    static int numberLine = 6;
+    static int numberLine;
     /**
      * Number of rows on the game grid
      */
-    static int numberRow = 12;
+    static int numberRow;
     /**
      * Number of bombs on the game grid
      */
-    static int numberOfBomb = 9;
+    static int numberOfBomb;
 
     /**
      * Game grid represented by StateCell
      */
-    static StateCell[][] stateCells = new StateCell[numberLine][numberRow];
+    static StateCell[][] stateCells;
 
     /**
      * Placing mode place a flag or just reveal
@@ -43,6 +43,7 @@ public class Main {
      * Create a blank game grid
      */
     public static void initGame() {
+        stateCells = new StateCell[numberLine][numberRow];
         for (int x = 0; x < stateCells.length; x++) {
             for (int y = 0; y < stateCells[x].length; y++) {
                 stateCells[x][y] = StateCell.EMPTY;
@@ -53,6 +54,7 @@ public class Main {
     /**
      * Generate all the bombs on the game grid
      * It cannot generate a bomb beside the player start point
+     *
      * @param random
      */
     public static void generateBomb(Random random) {
@@ -86,6 +88,7 @@ public class Main {
 
     /**
      * Return blue if there is only 1, green if there is 2 and red if there is more
+     *
      * @param numberOfBomb
      * @return
      */
@@ -109,7 +112,7 @@ public class Main {
         /*
          * Header
          */
-        System.out.print("  |");
+        System.out.print((stateCells.length >= 10 ? " " : "") + "  |");
         for (int a = 0; a < numberRow; a++) {
             System.out.print(" " + (char) ('A' + a) + " ");
             System.out.print("|");
@@ -125,7 +128,7 @@ public class Main {
             /*
              * Left index
              */
-            System.out.print(currentLineIndex + " |");
+            System.out.print((stateCells.length >= 10 ? (currentLineIndex < 10 ? currentLineIndex + " " : currentLineIndex) : currentLineIndex) + " |");
             /*
              * Content
              */
@@ -166,6 +169,7 @@ public class Main {
 
     /**
      * Input a cell or change mode
+     *
      * @param scanner
      * @param canSwitchMode
      * @return
@@ -183,7 +187,7 @@ public class Main {
                 currentPlacingMode = currentPlacingMode == PlacingMode.FLAGGING ? PlacingMode.REVEAL : PlacingMode.FLAGGING;
                 displayCurrentPlacingMode();
             } else {
-                inputValid = isInputValidCell(cell, result, inputValid);
+                inputValid = isInputValidCell(cell, result);
             }
         }
         return result;
@@ -200,28 +204,55 @@ public class Main {
         System.out.println(" Pour changer de mode entrez (s)");
     }
 
+    public static boolean isANumber(char inputChar) {
+        return inputChar >= '0' && inputChar <= '9';
+    }
+
     /**
      * Verify the cell if it's correct it return true and store the value in an array result 0 corresponding the line and 1 the row
+     *
      * @param cell
      * @param result
-     * @param inputValid
      * @return
      */
-    private static boolean isInputValidCell(String cell, int[] result, boolean inputValid) {
+    private static boolean isInputValidCell(String cell, int[] result) {
+        boolean inputValid = true;
         cell = cell.toUpperCase();
-        if (cell.length() == 2 && ('A') <= cell.charAt(0) && cell.charAt(0) < ('A' + numberRow)) {
-            if (('0') <= cell.charAt(1) && cell.charAt(1) < ('0' + numberLine)) {
-                result[0] = cell.charAt(1) - ('0');
+        if (cell.length() >= 2) {
+            Integer res = null;
+            if (cell.charAt(0) < ('A') || cell.charAt(0) >= ('A' + numberRow)) {
+                System.out.println("Un caractere était attendu entre A et " + (char) ('A' + numberRow));
+                inputValid = false;
+            } else {
                 result[1] = cell.charAt(0) - ('A');
-                inputValid = true;
             }
-        }
 
+            if (cell.length() == 2) {
+                if (isANumber(cell.charAt(1))) {
+                    res = cell.charAt(1) - '0';
+                }
+            } else if (cell.length() == 3) {
+                if (isANumber(cell.charAt(1)) && isANumber(cell.charAt(2))) {
+                    res = (cell.charAt(1) - '0') * 10 + cell.charAt(2) - '0';
+                }
+            }
+            if (res == null) {
+                inputValid = false;
+                System.out.println("Un numéro est attendus");
+            } else if (res >= numberLine) {
+                inputValid = false;
+                System.out.println("Un numéro entre 0 et " + (numberLine - 1));
+            } else {
+                result[0] = res;
+            }
+
+        }
         return inputValid;
     }
 
     /**
      * Return true if its a bomb
+     *
      * @param stateCell
      * @return
      */
@@ -231,6 +262,7 @@ public class Main {
 
     /**
      * Count how many bombs there is in the 8 cells beside the input cell
+     *
      * @param line
      * @param row
      * @return
@@ -252,6 +284,7 @@ public class Main {
 
     /**
      * Return the string of the cell ex: A1
+     *
      * @param line
      * @param row
      * @return
@@ -262,6 +295,7 @@ public class Main {
 
     /**
      * Reveal or flag a cell, if its empty it will reveal all the other beside if not flagged and will do the same for their neighbour
+     *
      * @param line
      * @param row
      */
@@ -299,6 +333,7 @@ public class Main {
 
     /**
      * Return true if the game is finished with a display if won or loose
+     *
      * @return
      */
     public static boolean isGameFinished() {
@@ -322,13 +357,69 @@ public class Main {
     }
 
     /**
+     * Function that return a number between min and max that have been input by user
+     *
+     * @param scanner
+     * @param message
+     * @param min
+     * @param max
+     * @return
+     */
+    public static int inputIntegerBetween(Scanner scanner, String message, int min, int max) {
+        Integer res = null;
+        while (res == null) {
+            System.out.println(message);
+            String stringInput = scanner.next();
+            try {
+                res = Integer.valueOf(stringInput);
+            } catch (Exception e) {
+                System.out.println("Veuillez entre un nombre valide");
+            }
+            if (res != null) {
+                if (res < min || res > max) {
+                    res = null;
+                }
+            }
+        }
+        return res;
+    }
+
+    /**
      * Main method to play the game
+     *
      * @param args
      */
     public static void main(String[] args) {
         Random random = new Random();
         Scanner scanner = new Scanner(System.in);
 
+        System.out.println("Quelle difficulté souhaitez vous: ");
+        System.out.println("1- Facile (5x5 - 5 drapeau)");
+        System.out.println("2- Moyen (10x10 - 10 drapeau)");
+        System.out.println("3- Difficile (15x15 - 40 drapeau)");
+        int difficulty = inputIntegerBetween(scanner, "Veuillez entrez un nombre entre 1 et 3", 1, 3);
+        switch (difficulty) {
+            case 1:
+                numberOFFlagRemaining = 5;
+                numberOfBomb = 5;
+                numberRow = 5;
+                numberLine = 5;
+                break;
+            case 2:
+                numberOFFlagRemaining = 10;
+                numberOfBomb = 10;
+                numberRow = 10;
+                numberLine = 10;
+                break;
+            case 3:
+                numberOFFlagRemaining = 40;
+                numberOfBomb = 40;
+                numberRow = 15;
+                numberLine = 15;
+                break;
+            default:
+                break;
+        }
         initGame();
 
         /*
