@@ -23,7 +23,27 @@ public class Main {
             "HABIT", "HAZARD", "HIBOU", "HISTOIRE", "HORLOGE", "HOTEL", "HUMAIN", "HUMOUR", "IMAGE", "INSECTE",
             "INVITE", "IVOIRE", "JARDIN", "JAUNE", "JOURNAL", "JUNGLE", "KANGOUROU", "KLAXON", "LABORATOIRE", "LAMPE"
     };
-    public static String randomWord(Random random){
+
+    public static char inputLetter(Scanner scanner) {
+        char result = '\0'; // Empty char (Unicode 0)
+
+        while (result == '\0') {
+            System.out.print("Proposez une lettre : ");
+            String nextString = scanner.next().toUpperCase();
+            if (nextString.length() == 1) {
+                if (nextString.charAt(0) >= 'A' && nextString.charAt(0) <= 'Z') {
+                    result = nextString.charAt(0);
+                } else {
+                    System.out.println("Veuillez saisir une lettre alphabétique entre A et Z");
+                }
+            } else {
+                System.out.println("Veuillez saisir seulement un char");
+            }
+        }
+        return result;
+    }
+
+    public static String randomWord(Random random) {
         return listOFWords[random.nextInt(listOFWords.length)];
     }
 
