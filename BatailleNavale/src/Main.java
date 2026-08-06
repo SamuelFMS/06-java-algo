@@ -4,12 +4,31 @@ import java.util.Scanner;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
+    /**
+     * Grid dimensions: length and width
+     */
     public static int sizeGrid = 5;
+    /**
+     * Number of boats in the grid
+     */
     public static int numberOfBoat = 3;
+    /**
+     * Size of each boat individually
+     */
     public static int sizeOfBoat = 2;
+    /**
+     * Grid by line per row and the object[] contain the cell
+     */
     public static Object[][][] grid = new Object[sizeGrid][sizeGrid][];
+    /**
+     * List of all the ships and the corresponding list of cells of the ship
+     */
     public static Object[][][] ships = new Object[numberOfBoat][sizeOfBoat][];
 
+    /**
+     * Display a singular cell
+     * @param cell
+     */
     public static void displayCell(Object[] cell) {
         if (cell[0] == StateCell.EMPTY) {
             if (cell[1] != null) {
@@ -20,7 +39,7 @@ public class Main {
             }
         } else if (cell[0] == StateCell.HIT) {
             if (cell[1] != null) {
-                if (isShipSinked(ships[(int) cell[1]])) {
+                if (isShipSunk(ships[(int) cell[1]])) {
                     System.out.print("~");
                 } else {
                     System.out.print("T");
@@ -31,15 +50,9 @@ public class Main {
         }
     }
 
-    public static boolean isShipSinked(Object[][] ships) {
-        for (Object[] cell : ships) {
-            if (cell[0] == StateCell.EMPTY) {
-                return false;
-            }
-        }
-        return true;
-    }
-
+    /**
+     * Display the grids
+     */
     public static void displayGrid() {
         /*
             Header
@@ -81,6 +94,9 @@ public class Main {
         }
     }
 
+    /**
+     * Init the grid with Empty cell
+     */
     public static void initGrid() {
         for (int x = 0; x < sizeGrid; x++) {
             for (int y = 0; y < sizeGrid; y++) {
@@ -92,6 +108,10 @@ public class Main {
         }
     }
 
+    /**
+     * Generate the boat
+     * @param random
+     */
     public static void generateBoat(Random random) {
         int numberOfBoatGenerated = 0;
         while (numberOfBoatGenerated < numberOfBoat) {
@@ -117,6 +137,12 @@ public class Main {
         }
     }
 
+    /**
+     * Verification string cell is correct
+     * @param cell
+     * @param result
+     * @return
+     */
     private static boolean isInputValidCell(String cell, int[] result) {
         boolean inputValid = false;
         cell = cell.toUpperCase();
@@ -130,6 +156,11 @@ public class Main {
         return inputValid;
     }
 
+    /**
+     * Verification input from scanner is correct
+     * @param scanner
+     * @return
+     */
     public static int[] inputACell(Scanner scanner) {
         int[] result = new int[2];
         System.out.println("Veuillez entrez une case (ex: B2)");
@@ -141,6 +172,10 @@ public class Main {
         return result;
     }
 
+    /**
+     * Shoot a cell in the board
+     * @param pos
+     */
     public static void shoot(int[] pos) {
         if (grid[pos[0]][pos[1]][0] == StateCell.EMPTY) {
             grid[pos[0]][pos[1]][0] = StateCell.HIT;
@@ -154,6 +189,10 @@ public class Main {
         }
     }
 
+    /**
+     * return if true, if gameFinish
+     * @return
+     */
     public static boolean isGameFinished() {
         boolean finished = true;
         for (Object[][] line : grid) {
@@ -167,6 +206,24 @@ public class Main {
         return finished;
     }
 
+    /**
+     * is the ship sunk
+     * @param ships
+     * @return
+     */
+    public static boolean isShipSunk(Object[][] ships) {
+        for (Object[] cell : ships) {
+            if (cell[0] == StateCell.EMPTY) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Main program
+     * @param args
+     */
     public static void main(String[] args) {
         Random random = new Random();
         Scanner scanner = new Scanner(System.in);
