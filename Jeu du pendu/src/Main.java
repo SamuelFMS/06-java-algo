@@ -48,6 +48,21 @@ public class Main {
         return listOFWords[random.nextInt(listOFWords.length)];
     }
 
+    public static String findCharInString(String wordToFind, String hideString, char a) {
+        StringBuilder newString = new StringBuilder(hideString);
+        if (wordToFind.contains(String.valueOf(a))) {
+            System.out.println("Bien joué ! La lettre '" + a + "' est dans le mot.");
+            for (int currentIndex = 0; currentIndex < wordToFind.length(); currentIndex++) {
+                if (wordToFind.charAt(currentIndex) == a) {
+                    newString.setCharAt(currentIndex, a);
+                }
+            }
+        } else {
+            numberOfTry--;
+            System.out.println("Dommage ! La lettre '" + a + "' n'est pas dans le mot. Il vous reste " + numberOfTry + " essais.");
+        }
+        return String.valueOf(newString);
+    }
     public static String hideString(String wordToHide){
         return wordToHide.replaceAll(".", "_");
     }
