@@ -29,6 +29,7 @@ public class Main {
 
     /**
      * Returns a string of the desired length, truncated or padded with spaces.
+     *
      * @param text
      * @param len
      * @return
@@ -46,6 +47,7 @@ public class Main {
 
     /**
      * Display a plane by is id
+     *
      * @param idPlane
      */
     public static void displayPlane(int idPlane) {
@@ -68,6 +70,7 @@ public class Main {
 
     /**
      * Displays planes by their id
+     *
      * @param idPlanes
      */
     public static void displayPlane(List<Integer> idPlanes) {
@@ -92,6 +95,7 @@ public class Main {
 
     /**
      * Create a piece with user input
+     *
      * @param scanner
      * @param idAvion
      */
@@ -130,6 +134,7 @@ public class Main {
 
     /**
      * Remove a piece from a plane
+     *
      * @param scanner
      * @param idPlane
      */
@@ -150,6 +155,7 @@ public class Main {
 
     /**
      * Display all piece of a plane and ask the user if they want to add or delete a piece
+     *
      * @param scanner
      * @param idPlane
      */
@@ -209,6 +215,7 @@ public class Main {
 
     /**
      * Find all the planes that have the search String in their plane
+     *
      * @param search
      * @return
      */
@@ -227,11 +234,18 @@ public class Main {
         return res;
     }
 
-    public static void generateRandomPlane(int numberOfPlane, Random random){
+
+    /**
+     * Generate x planes
+     *
+     * @param numberOfPlane
+     * @param random
+     */
+    public static void generateRandomPlane(int numberOfPlane, Random random) {
         int numberOfPlaneGenerated = 0;
-        while (numberOfPlaneGenerated < numberOfPlane ){
+        while (numberOfPlaneGenerated < numberOfPlane) {
             int randomId = random.nextInt(10000);
-            if(!planes.containsKey(randomId)) {
+            if (!planes.containsKey(randomId)) {
                 int[] paramPlane = new int[3];
                 paramPlane[0] = random.nextInt(programmes.length);
                 paramPlane[1] = random.nextInt(phases.length);
@@ -244,6 +258,7 @@ public class Main {
 
     /**
      * Main program ask what the user want to do
+     *
      * @param args
      */
     public static void main(String[] args) {
