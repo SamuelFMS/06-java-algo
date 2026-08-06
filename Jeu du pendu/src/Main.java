@@ -72,7 +72,22 @@ public class Main {
 
     public static void main(String[] args) {
         Random random = new Random();
+        Scanner scanner = new Scanner(System.in);
+
         String wordToFind = randomWord(random);
-        System.out.println(hideString(wordToFind));
+        String hiddenWord = hideString(wordToFind);
+        while(!isGameFinished(wordToFind, hiddenWord)) {
+            System.out.println("Mot Mystère :" + hiddenWord);
+            char inputChar = inputLetter(scanner);
+            hiddenWord = findCharInString(wordToFind, hiddenWord, inputChar);
+        }
+
+        if(wordToFind.equalsIgnoreCase(hiddenWord)) {
+            System.out.println("Félicitations ! Vous avez gagné ! Vous avez trouvé le mot secret : " + wordToFind);
+        }else {
+            System.out.println("Dommage, vous avez perdu ! Le mot secret était : " + wordToFind);
+        }
+
+        scanner.close();
     }
 }
