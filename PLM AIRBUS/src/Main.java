@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -226,12 +227,29 @@ public class Main {
         return res;
     }
 
+    public static void generateRandomPlane(int numberOfPlane, Random random){
+        int numberOfPlaneGenerated = 0;
+        while (numberOfPlaneGenerated < numberOfPlane ){
+            int randomId = random.nextInt(10000);
+            if(!planes.containsKey(randomId)) {
+                int[] paramPlane = new int[3];
+                paramPlane[0] = random.nextInt(programmes.length);
+                paramPlane[1] = random.nextInt(phases.length);
+                paramPlane[2] = random.nextInt(types.length);
+                planes.put(randomId, paramPlane);
+                numberOfPlaneGenerated++;
+            }
+        }
+    }
+
     /**
      * Main program ask what the user want to do
      * @param args
      */
     public static void main(String[] args) {
+        Random random = new Random();
         Scanner scanner = new Scanner(System.in);
+
         int[] plane1 = {1, 1, 1};
         int[] plane2 = {2, 2, 2};
         Object[] piece1 = {"Aile droite 1425", "Aile droite", 5.05};
@@ -240,6 +258,7 @@ public class Main {
         ArrayList<Object[]> plane1Piece = new ArrayList<>();
         plane1Piece.add(piece1);
         piecesPerPlane.put(8772, plane1Piece);
+        generateRandomPlane(10, random);
         boolean quitProgram = false;
         while (!quitProgram) {
             System.out.println("Que souhaitez vous effectuez");
