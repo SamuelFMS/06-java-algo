@@ -1,11 +1,16 @@
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static int numberOfTry = 6;
+    public static final String LIGHT_GRAY = "\u001B[38;5;250m";
+    public static final String RESET = "\u001B[0m";
+
+    protected static int numberOfTry = 6;
     protected static String[] listOFWords = {"ACCORD", "ACTEUR", "AGENDA", "AGNEAU", "ALBUM", "ALERTE", "AMANDE", "AMICAL", "ANIMAL", "ANANAS", "ARBRE", "ARDOISE", "ARGENT", "ARMOIRE", "ASTUCE", "AVION", "AVOCAT", "BALLE", "BANANE", "BARQUE", "BASSIN", "BATEAU", "BICYCLETTE", "BIJOU", "BILLET", "BOCAL", "BOUGIE", "BOUTEILLE", "BOUTON", "BRANCHE", "BUREAU", "CABANE", "CADEAU", "CAHIER", "CAILLOU", "CALCUL", "CAMERA", "CAMION", "CANARD", "CANYON", "CARNET", "CARTON", "CASQUE", "CERISE", "CHAISE", "CHALEUR", "CHAPEAU", "CHASSE", "CHATON", "CHAUSSURE", "CHEMISE", "CHEVAL", "CHEVEU", "CHIEN", "CHIFFRE", "CIMENT", "CINEMA", "CISEAUX", "CITRON", "CLASSE", "CLAVIER", "CLOCHARD", "COFFRE", "COLLE", "COLORE", "COMPTE", "COPAIN", "CORDE", "COULOIR", "COUTEAU", "CRAIE", "CRAYON", "CUISINE", "CUIVRE", "DANSEUR", "DAUPHIN", "DECOR", "DEFENSE", "DESSIN", "DEVINETTE", "DICTEE", "DIGITAL", "DINOSAURE", "DOCTEUR", "DOMINO", "DRAPEAU", "DROITE", "ECLAIR", "ECOLE", "ECRAN", "ECUREUIL", "EFFORT", "ENFANT", "ENIGME", "EPAULE", "EPONGE", "EQUIPE", "ESPACE", "ESPRIT", "ETOILE", "FACTORIE", "FAMILLE", "FANTOME", "FARINE", "FAUTEUIL", "FENETRE", "FERMIER", "FEUILLE", "FIDELE", "FILLETTE", "FLEUVE", "FLOCON", "FORGEUR", "FORMAT", "FRAISE", "FROMAGE", "FUSIBLE", "GARAGE", "GARCON", "GATEAU", "GAUCHE", "GAZON", "GIRAFE", "GLACE", "GOMME", "GOUDRON", "GRANDEUR", "GRENOUILLE", "GRIFFE", "GUITARE", "HABIT", "HAZARD", "HIBOU", "HISTOIRE", "HORLOGE", "HOTEL", "HUMAIN", "HUMOUR", "IMAGE", "INSECTE", "INVITE", "IVOIRE", "JARDIN", "JAUNE", "JOURNAL", "JUNGLE", "KANGOUROU", "KLAXON", "LABORATOIRE", "LAMPE"};
+    protected static ArrayList<Character> listAttempedChar = new ArrayList<Character>();
 
     public static char inputLetter(Scanner scanner) {
         char result = '\0'; // Empty char (Unicode 0)
@@ -13,9 +18,14 @@ public class Main {
         while (result == '\0') {
             System.out.print("Proposez une lettre : ");
             String nextString = scanner.next().toUpperCase();
+
             if (nextString.length() == 1) {
                 if (nextString.charAt(0) >= 'A' && nextString.charAt(0) <= 'Z') {
-                    result = nextString.charAt(0);
+                    if (!listAttempedChar.contains(nextString.charAt(0))) {
+                        result = nextString.charAt(0);
+                    } else {
+                        System.out.println("Vous avez déjà essayer " + nextString.charAt(0) + "!");
+                    }
                 } else {
                     System.out.println("Veuillez saisir une lettre alphabétique entre A et Z");
                 }
@@ -54,6 +64,18 @@ public class Main {
         return wordToFind.equalsIgnoreCase(hiddenWord) || numberOfTry <= 0;
     }
 
+    public static void displayRemainingLetter() {
+        for (int charCode = 'A'; charCode <= 'Z'; charCode++) {
+            if (!listAttempedChar.contains((char) charCode)) {
+                System.out.print(LIGHT_GRAY + (char) charCode + " " + RESET);
+            } else {
+                System.out.print((char) charCode + " ");
+            }
+
+        }
+        System.out.println();
+    }
+
     public static void main(String[] args) {
         Random random = new Random();
         Scanner scanner = new Scanner(System.in);
@@ -62,7 +84,9 @@ public class Main {
         String hiddenWord = hideString(wordToFind);
         while (!isGameFinished(wordToFind, hiddenWord)) {
             System.out.println("Mot Mystère :" + hiddenWord);
+            displayRemainingLetter();
             char inputChar = inputLetter(scanner);
+            listAttempedChar.add(inputChar);
             hiddenWord = findCharInString(wordToFind, hiddenWord, inputChar);
         }
 
