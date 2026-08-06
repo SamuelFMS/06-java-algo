@@ -1,12 +1,9 @@
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static int numberOfTry = 6;
     protected static String[] listOFWords = {
             "ACCORD", "ACTEUR", "AGENDA", "AGNEAU", "ALBUM", "ALERTE", "AMANDE", "AMICAL", "ANIMAL", "ANANAS",
             "ARBRE", "ARDOISE", "ARGENT", "ARMOIRE", "ASTUCE", "AVION", "AVOCAT", "BALLE", "BANANE", "BARQUE",
@@ -25,6 +22,8 @@ public class Main {
             "INVITE", "IVOIRE", "JARDIN", "JAUNE", "JOURNAL", "JUNGLE", "KANGOUROU", "KLAXON", "LABORATOIRE", "LAMPE"
     };
 
+    public static int numberOfTry = 6;
+
     public static char inputLetter(Scanner scanner) {
         char result = '\0'; // Empty char (Unicode 0)
 
@@ -32,9 +31,10 @@ public class Main {
             System.out.print("Proposez une lettre : ");
             String nextString = scanner.next().toUpperCase();
             if (nextString.length() == 1) {
-                if (nextString.charAt(0) >= 'A' && nextString.charAt(0) <= 'Z') {
+                if(nextString.charAt(0) >= 'A' && nextString.charAt(0) <= 'Z') {
                     result = nextString.charAt(0);
-                } else {
+                }
+                else{
                     System.out.println("Veuillez saisir une lettre alphabétique entre A et Z");
                 }
             } else {
@@ -44,22 +44,22 @@ public class Main {
         return result;
     }
 
-    public static String randomWord(Random random) {
+    public static String randomWord(Random random){
         return listOFWords[random.nextInt(listOFWords.length)];
     }
 
-    public static String findCharInString(String wordToFind, String hideString, char a) {
+    public static String findCharInString(String wordToFind, String hideString, char a){
         StringBuilder newString = new StringBuilder(hideString);
-        if (wordToFind.contains(String.valueOf(a))) {
-            System.out.println("Bien joué ! La lettre '" + a + "' est dans le mot.");
-            for (int currentIndex = 0; currentIndex < wordToFind.length(); currentIndex++) {
-                if (wordToFind.charAt(currentIndex) == a) {
+        if(wordToFind.contains(String.valueOf(a))){
+            System.out.println("Bien joué ! La lettre '"+a+"' est dans le mot.");
+            for(int currentIndex = 0; currentIndex < wordToFind.length(); currentIndex++) {
+                if(wordToFind.charAt(currentIndex) == a){
                     newString.setCharAt(currentIndex, a);
                 }
             }
-        } else {
+        }else{
             numberOfTry--;
-            System.out.println("Dommage ! La lettre '" + a + "' n'est pas dans le mot. Il vous reste " + numberOfTry + " essais.");
+            System.out.println("Dommage ! La lettre '"+a+"' n'est pas dans le mot. Il vous reste " + numberOfTry + " essais.");
         }
         return String.valueOf(newString);
     }
