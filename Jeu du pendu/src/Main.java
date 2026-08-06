@@ -66,6 +66,10 @@ public class Main {
     public static String hideString(String wordToHide){
         return wordToHide.replaceAll(".", "_");
     }
+    public static boolean isGameFinished(String wordToFind, String hiddenWord){
+        return wordToFind.equalsIgnoreCase(hiddenWord) || numberOfTry <= 0;
+    }
+
     public static void main(String[] args) {
         Random random = new Random();
         String wordToFind = randomWord(random);
