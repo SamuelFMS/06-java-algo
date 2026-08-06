@@ -14,9 +14,10 @@ public class Main {
             System.out.print("Proposez une lettre : ");
             String nextString = scanner.next().toUpperCase();
             if (nextString.length() == 1) {
-                if (nextString.charAt(0) >= 'A' && nextString.charAt(0) <= 'Z') {
+                if(nextString.charAt(0) >= 'A' && nextString.charAt(0) <= 'Z') {
                     result = nextString.charAt(0);
-                } else {
+                }
+                else{
                     System.out.println("Veuillez saisir une lettre alphabétique entre A et Z");
                 }
             } else {
@@ -26,22 +27,22 @@ public class Main {
         return result;
     }
 
-    public static String randomWord(Random random) {
+    public static String randomWord(Random random){
         return listOFWords[random.nextInt(listOFWords.length)];
     }
 
-    public static String findCharInString(String wordToFind, String hideString, char a) {
+    public static String findCharInString(String wordToFind, String hideString, char a){
         StringBuilder newString = new StringBuilder(hideString);
-        if (wordToFind.contains(String.valueOf(a))) {
-            System.out.println("Bien joué ! La lettre '" + a + "' est dans le mot.");
-            for (int currentIndex = 0; currentIndex < wordToFind.length(); currentIndex++) {
-                if (wordToFind.charAt(currentIndex) == a) {
+        if(wordToFind.contains(String.valueOf(a))){
+            System.out.println("Bien joué ! La lettre '"+a+"' est dans le mot.");
+            for(int currentIndex = 0; currentIndex < wordToFind.length(); currentIndex++) {
+                if(wordToFind.charAt(currentIndex) == a){
                     newString.setCharAt(currentIndex, a);
                 }
             }
-        } else {
+        }else{
             numberOfTry--;
-            System.out.println("Dommage ! La lettre '" + a + "' n'est pas dans le mot. Il vous reste " + numberOfTry + " essais.");
+            System.out.println("Dommage ! La lettre '"+a+"' n'est pas dans le mot. Il vous reste " + numberOfTry + " essais.");
         }
         return String.valueOf(newString);
     }
