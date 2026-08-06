@@ -111,7 +111,29 @@ public class Main {
     }
 
     public static void shoot(int[] pos) {
-        grid[pos[0]][pos[1]][0] = StateCell.HIT;
+        if(grid[pos[0]][pos[1]][0] == StateCell.EMPTY) {
+            grid[pos[0]][pos[1]][0] = StateCell.HIT;
+            if(grid[pos[0]][pos[1]][1] != null) {
+                System.out.println("Vous avez touché un bateau");
+            }
+            else{
+                System.out.println("Dans l'eau");
+            }
+        } else {
+            System.out.println("Vous avez deja tiré sur cette case");
+        }
+    }
+
+    public static boolean isGameFinished(){
+        boolean finished = true;
+        for (Object[][] line: grid) {
+            for(Object[] cell: line){
+                if(cell[1] != null && cell[0] == StateCell.EMPTY){
+                    finished = false;
+                }
+            }
+        }
+        return finished;
     }
 
     public static void main(String[] args) {
@@ -120,9 +142,12 @@ public class Main {
 
         initGrid();
         generateBoat(random);
+        while (!isGameFinished()) {
+            displayGrid();
+            shoot(inputACell(scanner));
+        }
         displayGrid();
-        shoot(inputACell(scanner));
-        displayGrid();
+        System.out.println("Felicitation vous avez touchés tous les bateaux");
 
         scanner.close();
     }
