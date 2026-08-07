@@ -69,12 +69,17 @@ public class Main {
      * @param idPlane
      */
     public static void removePieceFromPlane(Scanner scanner, int idPlane) {
+        System.out.println("============================================================");
+        System.out.println("❌ RETRAIT D'UNE PIÈCE – SÉLECTION");
+        System.out.println("============================================================");
         System.out.println(formatString("id", 4) + " | " + "Name");
+        System.out.println(repeat("-",4) + "-+--------------------------------");
         for (int i = 0; i < partsPerPlane.get(idPlane).size(); i++) {
             String[] part = (String[]) partsPerPlane.get(idPlane).get(i)[0];
             System.out.println(formatString(String.valueOf(i), 4) + " | " + part[0]);
         }
-        System.out.println("Quel piece souhaitez vous supprimez");
+        System.out.println();
+        System.out.println("Entrez l'ID de la pièce à supprimer (ou 'q' pour annuler) : ");
         if (scanner.hasNextInt()) {
             int idPieceToDelete = scanner.nextInt();
             if (idPieceToDelete >= 0 && idPieceToDelete < partsPerPlane.get(idPlane).size()) {
@@ -134,6 +139,7 @@ public class Main {
                     System.out.println("2- Retirer une piece a l'avion");
                 }
             }
+            System.out.println("q- Retourner en arrière");
             Integer inputUser = inputIntegerBetween(scanner, "Choix:", 1, 2);
             if (inputUser == null) {
                 displayingPieceForPlane = false;
