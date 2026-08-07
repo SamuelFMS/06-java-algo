@@ -11,6 +11,7 @@ public class Part {
 
     /**
      * Create a "object" part
+     *
      * @param partName
      * @param Category
      * @return
@@ -25,8 +26,7 @@ public class Part {
     /**
      * Init list of parts
      */
-    public static void initListOfPiece()
-    {
+    public static void initListOfPiece() {
         parts.add(createAObjectPiece("Turbofan Engine", "Propulsion"));
         parts.add(createAObjectPiece("Landing Gear", "Structure"));
         parts.add(createAObjectPiece("Weather Radar", "Avionics"));
@@ -39,10 +39,10 @@ public class Part {
         parts.add(createAObjectPiece("Oxygen Mask", "Safety"));
     }
 
-    public static void displayAllPieces(){
+    public static void displayAllPieces() {
         int numero = 0;
-        int colNumero =6;
-        int colNamePart=20;
+        int colNumero = 6;
+        int colNamePart = 20;
         int colCategory = 20;
         /*
             Header Table
@@ -60,7 +60,7 @@ public class Part {
         /*
             Body Table
          */
-        for(String[] part : parts) {
+        for (String[] part : parts) {
             numero++;
             System.out.print(Main.formatString(String.valueOf(numero), colNumero) + " | ");
             System.out.print(Main.formatString(part[0], colNamePart) + " | ");
@@ -69,11 +69,10 @@ public class Part {
     }
 
     /**
-     * @deprecated This method is obsolete and must be remade.
-     * Create a part with user input
-     *
      * @param scanner
      * @param idAvion
+     * @deprecated This method is obsolete and must be remade.
+     * Create a part with user input
      */
     @Deprecated
     public static void inputCreatePiece(Scanner scanner, int idAvion) {

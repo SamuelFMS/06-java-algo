@@ -94,13 +94,14 @@ public class Plane {
 
     /**
      * Generate a list of Pieces for the plane
+     *
      * @param random
      * @param idPlane
      * @param numberPiece
      */
     public static void generateRandomPiecePlane(Random random, int idPlane, int numberPiece) {
         ArrayList<Object[]> parts = new ArrayList<>();
-        for(int currentPiece = 0; currentPiece < numberPiece; currentPiece++){
+        for (int currentPiece = 0; currentPiece < numberPiece; currentPiece++) {
             String[] randomPiece = Part.parts.get(random.nextInt(Part.parts.size()));
             int price = random.nextInt(1000000);
             Object[] piece = new Object[2];
