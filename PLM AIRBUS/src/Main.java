@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
 
@@ -86,6 +88,17 @@ public class Main {
     }
 
     /**
+     * Repeat a symbol by times
+     *
+     * @param symbol
+     * @param times
+     * @return
+     */
+    public static String repeat(String symbol, int times) {
+        return Stream.generate(() -> symbol).limit(times).collect(Collectors.joining());
+    }
+
+    /**
      * Display all part of a plane and ask the user if they want to add or delete a part
      *
      * @param scanner
@@ -94,12 +107,15 @@ public class Main {
     public static void displayPieceForPlane(Scanner scanner, int idPlane) {
         int colName = 15;
         int colCategory = 15;
-        int colPrice = 6;
+        int colPrice = 9;
         boolean displayingPieceForPlane = true;
         while (displayingPieceForPlane) {
             if (partsPerPlane.containsKey(idPlane)) {
-                System.out.println("Affichage des pieces pour l'avion " + idPlane + ": ");
+                System.out.println("============================================================");
+                System.out.println("\uD83D\uDCE6 PIÈCES DÉTACHÉES – AVION #" + idPlane);
+                System.out.println("============================================================");
                 System.out.println(formatString("Nom de la pièce", colName) + " | " + formatString("Catégorie", colCategory) + " | " + formatString("Prix", colPrice));
+                System.out.println(repeat("-", colName) + "-+-" + repeat("-", colCategory) + "-+-" + repeat("-", colPrice));
                 for (Object[] str : partsPerPlane.get(idPlane)) {
                     String[] part = (String[]) str[0];
                     int price = (int) str[1];
@@ -110,6 +126,7 @@ public class Main {
             } else {
                 System.out.println("Aucune piece trouver pour cette avion");
             }
+            System.out.println();
             System.out.println("Que souhaitez vous faire ?");
             System.out.println("1- Ajouter une piece a l'avion");
             if (partsPerPlane.containsKey(idPlane)) {
@@ -243,7 +260,6 @@ public class Main {
                         break;
                     case 3:
                         displayAllPlane();
-                        System.out.println();
                         Integer planeKey = inputIntegerBetween(scanner, "Veuillez entrez l'identifiant de l'avion", 0, Integer.MAX_VALUE);
                         if (planeKey != null) {
                             if (Plane.planes.containsKey(planeKey)) {

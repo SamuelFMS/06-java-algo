@@ -25,7 +25,7 @@ public class Plane {
     /**
      * Display a plane drawing
      */
-    public static void displayDrawingPlane(){
+    public static void displayDrawingPlane() {
         System.out.println("               " + "      __!__");
         System.out.println("               " + "^----o-(_)-o----^");
     }
@@ -63,8 +63,11 @@ public class Plane {
         int colProgramme = 10; // Programme
         int colPhase = 20; // Phase
         int colType = 15; // Type
-
+        System.out.println("============================================================");
+        System.out.println("✈  LISTE DES AVIONS");
+        System.out.println("============================================================");
         System.out.println(Main.formatString("Identifiant", colId) + " | " + Main.formatString("Programme", colProgramme) + " | " + Main.formatString("Phase", colPhase) + " | " + Main.formatString("Type", colType));
+        System.out.println(Main.repeat("-", colId) + "-+-" + Main.repeat("-", colProgramme) + "-+-" + Main.repeat("-", colPhase) + "-+-" + Main.repeat("-", colType));
         for (int idPlane : idPlanes) {
             if (planes.containsKey(idPlane)) {
                 int[] plane = planes.get(idPlane);
@@ -76,6 +79,7 @@ public class Plane {
                 System.out.println("Impossible de trouver cette avion " + idPlane + "!");
             }
         }
+        System.out.println();
     }
 
     /**
