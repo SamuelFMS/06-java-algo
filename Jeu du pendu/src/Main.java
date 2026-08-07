@@ -12,7 +12,7 @@ public class Main {
     /**
      * Number of try left
      */
-    protected static int numberOfTry = 6;
+    protected static int numberOfTry = 10;
     /**
      * List of word to guess
      */
@@ -121,31 +121,47 @@ public class Main {
      * Display the hangman
      */
     public static void displayHangman() {
-        int step = 6-numberOfTry;
-        System.out.println(step);
+        int step = 10-numberOfTry;
+        if(step == 10) {
+            // Affichage de la tombe
+            System.out.println("    .-\"------\"-.");
+            System.out.println("   /            \\");
+            System.out.println("  |   R. I. P.   |");
+            System.out.println("  |              |");
+            System.out.println("  |   G A M E    |");
+            System.out.println("  |    O V E R   |");
+            System.out.println("  |              |");
+            System.out.println("====================");
 
-        // First Line
-        System.out.println(" +---+");
-        // Second Line
-        System.out.println(" |   |");
-        // Third Line
-        System.out.print(" ");
-        System.out.print(step>=1?"O":" "); // step 1: the head
-        System.out.println("   |");
-        // Fourth Line
-        System.out.print(step>=3?"/":" "); // Step 3: Left Arm
-        System.out.print(step >= 2 ? "|": " "); // step 2: body trunc
-        System.out.print(step >= 4 ? "\\": " "); // step 4: right arm
-        System.out.println("  |");
-        // Fifth Line
-        System.out.print(step>=5?"/":" "); // step 5 : left leg
-        System.out.print(" ");
-        System.out.print(step >=6?"\\":" "); // step 6 : right leg
-        System.out.println("  |");
-        // Sixth Line
-        System.out.println("     |");
-        // Seven Line
-        System.out.println("=========");
+        }
+        else if(step != 0) {
+            System.out.println(step);
+
+            // First Line
+            System.out.println(step >= 2 ? " +---+" : ""); // step 2 Support
+            // Second Line
+            System.out.println(step >= 2 ? " |   |" : ""); // step 2 Support
+            // Third Line
+            System.out.print(" ");
+            System.out.print(step >= 9 ? ANSI_RED:"");
+            System.out.print(step >= 3 ? "O" : " "); // step 3: the head
+            System.out.print(step >= 9 ? RESET:"");
+            System.out.println(step >= 2 ? "   |" : ""); // step 2 Support
+            // Fourth Line
+            System.out.print(step >= 5 ? "/" : " "); // step 5: Left Arm
+            System.out.print(step >= 4 ? "|" : " "); // step 4: body trunc
+            System.out.print(step >= 6 ? "\\" : " "); // step 6: right arm
+            System.out.println(step >= 2 ? "  |" : ""); // step 2 Support
+            // Fifth Line
+            System.out.print(step >= 7 ? "/" : " "); // step 7: left leg
+            System.out.print(" ");
+            System.out.print(step >= 8 ? "\\" : " "); // step 8: right leg
+            System.out.println(step >= 2 ? "  |" : ""); // step 2 Support
+            // Sixth Line
+            System.out.println(step >= 2 ? "     |" : ""); // step 2 Support
+            // Seven Line
+            System.out.println(step >= 1 ? "=========" : ""); // step 1 Support
+        }
     }
 
     /**
