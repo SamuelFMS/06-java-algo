@@ -23,6 +23,14 @@ public class Plane {
     protected static Map<Integer, int[]> planes = new HashMap<>();
 
     /**
+     * Display a plane drawing
+     */
+    public static void displayDrawingPlane(){
+        System.out.println("               " + "      __!__");
+        System.out.println("               " + "^----o-(_)-o----^");
+    }
+
+    /**
      * Display a plane by is id
      *
      * @param idPlane
