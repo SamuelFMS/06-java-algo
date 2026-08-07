@@ -6,26 +6,13 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
+
     /**
-     * Liste de programme pour les avions
+     * Dictionary using an aircraft ID as the key, with a list of Objects containing a String (part name), a String (category), and a float (price) \n
+     * Object[0] -> Part details -> [0]: part name; [1]: "part category"
+     * Object[1] -> price (float)
      */
-    protected static String[] programmes = {"A320", "A400M", "A380", "A300"};
-    /**
-     * Liste des differentes phases des avions
-     */
-    protected static String[] phases = {"etudeFaisabilite", "conception", "definition", "construction", "enService", "cloture"};
-    /**
-     * Liste des differentes types d'avions
-     */
-    protected static String[] types = {"fret", "transport", "passager", "militaire", "avionsAffaires"};
-    /**
-     * Dictionnaire d'avion avec l'id integer comme clé puis idProgramme idPhase idTypes
-     */
-    protected static Map<Integer, int[]> planes = new HashMap<>();
-    /**
-     * Dictionnaire contenant comme clé l'id d'un avion avec une liste Object contenant un String Nom de la piece, un String category et un float price
-     */
-    protected static Map<Integer, ArrayList<Object[]>> piecesPerPlane = new HashMap<>();
+    protected static Map<Integer, ArrayList<Object[]>> partsPerPlane = new HashMap<>();
 
     /**
      * Returns a string of the desired length, truncated or padded with spaces.
@@ -44,165 +31,113 @@ public class Main {
             return text;
         }
     }
-
     /**
-     * Display a plane by is id
+     * Add a part to a plane
      *
-     * @param idPlane
      */
-    public static void displayPlane(int idPlane) {
-        int colId = 15; // Identifiant
-        int colProgramme = 10; // Programme
-        int colPhase = 20; // Phase
-        int colType = 15; // Type
-
-        System.out.println(formatString("Identifiant", colId) + " | " + formatString("Programme", colProgramme) + " | " + formatString("Phase", colPhase) + " | " + formatString("Type", colType));
-        if (planes.containsKey(idPlane)) {
-            int[] plane = planes.get(idPlane);
-            String programme = programmes[plane[0]];
-            String phase = phases[plane[1]];
-            String type = types[plane[2]];
-            System.out.println(formatString(String.valueOf(idPlane), colId) + " | " + formatString(programme, colProgramme) + " | " + formatString(phase, colPhase) + " | " + formatString(type, colType));
-        } else {
-            System.out.println("Impossible de trouver cette avion " + idPlane + "!");
-        }
-    }
-
-    /**
-     * Displays planes by their id
-     *
-     * @param idPlanes
-     */
-    public static void displayPlane(List<Integer> idPlanes) {
-        int colId = 15; // Identifiant
-        int colProgramme = 10; // Programme
-        int colPhase = 20; // Phase
-        int colType = 15; // Type
-
-        System.out.println(formatString("Identifiant", colId) + " | " + formatString("Programme", colProgramme) + " | " + formatString("Phase", colPhase) + " | " + formatString("Type", colType));
-        for (int idPlane : idPlanes) {
-            if (planes.containsKey(idPlane)) {
-                int[] plane = planes.get(idPlane);
-                String programme = programmes[plane[0]];
-                String phase = phases[plane[1]];
-                String type = types[plane[2]];
-                System.out.println(formatString(String.valueOf(idPlane), colId) + " | " + formatString(programme, colProgramme) + " | " + formatString(phase, colPhase) + " | " + formatString(type, colType));
-            } else {
-                System.out.println("Impossible de trouver cette avion " + idPlane + "!");
+    public static void addAPieceToPlane(Scanner scanner, int idAvion){
+        Part.displayAllPieces();
+        Integer idPieceToAddToPlace = Main.inputIntegerBetween(scanner,"Quel pièce souhaitez vous ajoutez? ",0, Part.parts.size());
+        if(idPieceToAddToPlace != null) {
+            if(idPieceToAddToPlace == 0) {
+                System.out.println("Creation dune toute nouvelle piece");
+            }
+            else {
+                Integer price = Main.inputIntegerBetween(scanner, "Quel est le prix de cette piece ? ", 0, Integer.MAX_VALUE);
+                if (price != null) {
+                    Object[] part = new Object[2];
+                    part[0] = Part.parts.get(idPieceToAddToPlace - 1);
+                    part[1] = price;
+                    if (partsPerPlane.containsKey(idAvion)) {
+                        partsPerPlane.get(idAvion).add(part);
+                    } else {
+                        ArrayList<Object[]> listPiece = new ArrayList<>();
+                        listPiece.add(part);
+                        partsPerPlane.put(idAvion, listPiece);
+                    }
+                }
             }
         }
     }
 
     /**
-     * Create a piece with user input
-     *
-     * @param scanner
-     * @param idAvion
-     */
-    public static void inputPiece(Scanner scanner, int idAvion) {
-        System.out.println("Veuillez saisir le nom de la piece");
-        String namePiece = scanner.nextLine();
-        System.out.println("Veuillez saisir la categorie de la piece");
-        String categoryPiece = scanner.nextLine();
-        System.out.println("Veuillez saisir le prix de la piece");
-        boolean isInputFloat = false;
-        float pricePiece = 0;
-        while (!isInputFloat) {
-            if (scanner.hasNextFloat()) {
-                isInputFloat = true;
-                pricePiece = scanner.nextFloat();
-            } else {
-                System.out.println("Un float est attendu ici");
-                scanner.next();
-            }
-        }
-        Object[] res = new Object[3];
-        res[0] = namePiece;
-        res[1] = categoryPiece;
-        res[2] = pricePiece;
-
-        if (piecesPerPlane.containsKey(idAvion)) {
-            piecesPerPlane.get(idAvion).add(res);
-        } else {
-            ArrayList<Object[]> listPieces = new ArrayList<>();
-            listPieces.add(res);
-            piecesPerPlane.put(idAvion, listPieces);
-        }
-
-
-    }
-
-    /**
-     * Remove a piece from a plane
+     * Remove a part from a plane
      *
      * @param scanner
      * @param idPlane
      */
-    public static void removePiece(Scanner scanner, int idPlane) {
+    public static void removePieceFromPlane(Scanner scanner, int idPlane) {
         System.out.println(formatString("id", 4) + " | " + "Name");
-        for (int i = 0; i < piecesPerPlane.get(idPlane).size(); i++) {
-            System.out.println(formatString(String.valueOf(i), 4) + " | " + piecesPerPlane.get(idPlane).get(i)[0]);
+        for (int i = 0; i < partsPerPlane.get(idPlane).size(); i++) {
+            String[] part = (String[]) partsPerPlane.get(idPlane).get(i)[0];
+            System.out.println(formatString(String.valueOf(i), 4) + " | " + part[0]);
         }
         System.out.println("Quel piece souhaitez vous supprimez");
         if (scanner.hasNextInt()) {
             int idPieceToDelete = scanner.nextInt();
-            if (idPieceToDelete >= 0 && idPieceToDelete < piecesPerPlane.get(idPlane).size()) {
-                piecesPerPlane.get(idPlane).remove(idPieceToDelete);
+            if (idPieceToDelete >= 0 && idPieceToDelete < partsPerPlane.get(idPlane).size()) {
+                String[] part = (String[]) partsPerPlane.get(idPlane).get(idPieceToDelete)[0];
+                String nomPiece = part[0];
+                partsPerPlane.get(idPlane).remove(idPieceToDelete);
+                System.out.println("La piece " + nomPiece + " a bien été supprimer a l'avion " + idPlane );
             }
 
         }
     }
 
     /**
-     * Display all piece of a plane and ask the user if they want to add or delete a piece
+     * Display all part of a plane and ask the user if they want to add or delete a part
      *
      * @param scanner
      * @param idPlane
      */
-    public static void displayAllPiece(Scanner scanner, int idPlane) {
+    public static void displayPieceForPlane(Scanner scanner, int idPlane) {
         int colName = 15;
         int colCategory = 15;
-        int colPrix = 6;
-        if (piecesPerPlane.containsKey(idPlane)) {
-            System.out.println("Affichage des pieces");
-            System.out.println(formatString("Name", colName) + " | " + formatString("Categorie", colCategory) + " | " + formatString("Prix", colPrix));
-            for (Object[] str : piecesPerPlane.get(idPlane)) {
-                System.out.print(formatString(String.valueOf(str[0]), colName) + " | ");
-                System.out.print(formatString(String.valueOf(str[1]), colName) + " | ");
-                System.out.println(formatString(String.valueOf(str[2]), colName));
-            }
-        } else {
-            System.out.println("Aucune piece trouver pour cette avion");
-        }
-        System.out.println("Que souhaitez vous faire ?");
-        System.out.println("1- Ajouter une piece a l'avion");
-        if (piecesPerPlane.containsKey(idPlane)) {
-            if (!piecesPerPlane.get(idPlane).isEmpty()) {
-                System.out.println("2- Retirer une piece a l'avion");
-            }
-        }
-        int saisieUtilisateur = 0;
-        while (saisieUtilisateur == 0) {
-            if (scanner.hasNextInt()) {
-                saisieUtilisateur = scanner.nextInt();
-            }
-            scanner.nextLine();
-        }
-        switch (saisieUtilisateur) {
-            case 1:
-                inputPiece(scanner, idPlane);
-                break;
-            case 2:
-                if (piecesPerPlane.containsKey(idPlane) && !piecesPerPlane.get(idPlane).isEmpty()) {
-                    removePiece(scanner, idPlane);
-                    break;
+        int colPrice = 6;
+        boolean displayingPieceForPlane = true;
+        while(displayingPieceForPlane) {
+            if (partsPerPlane.containsKey(idPlane)) {
+                System.out.println("Affichage des pieces pour l'avion " + idPlane + ": ");
+                System.out.println(formatString("Nom de la pièce", colName) + " | " + formatString("Catégorie", colCategory) + " | " + formatString("Prix", colPrice));
+                for (Object[] str : partsPerPlane.get(idPlane)) {
+                    String[] part = (String[]) str[0];
+                    int price = (int) str[1];
+                    System.out.print(formatString(String.valueOf(part[0]), colName) + " | ");
+                    System.out.print(formatString(String.valueOf(part[1]), colName) + " | ");
+                    System.out.println(formatString(String.valueOf(price), colName));
                 }
-
-                System.out.println("Cet avion ne contient pas de piece a supprimer");
-                break;
-            default:
-                System.out.println("Saisir un nombre du tableau");
-                break;
+            } else {
+                System.out.println("Aucune piece trouver pour cette avion");
+            }
+            System.out.println("Que souhaitez vous faire ?");
+            System.out.println("1- Ajouter une piece a l'avion");
+            if (partsPerPlane.containsKey(idPlane)) {
+                if (!partsPerPlane.get(idPlane).isEmpty()) {
+                    System.out.println("2- Retirer une piece a l'avion");
+                }
+            }
+            Integer inputUser = inputIntegerBetween(scanner,"Choix:",1,2);
+            if(inputUser == null) {
+                displayingPieceForPlane = false;
+            }
+            else {
+                switch (inputUser) {
+                    case 1:
+                        addAPieceToPlane(scanner, idPlane);
+                        break;
+                    case 2:
+                        if (partsPerPlane.containsKey(idPlane) && !partsPerPlane.get(idPlane).isEmpty()) {
+                            removePieceFromPlane(scanner, idPlane);
+                            break;
+                        }
+                        System.out.println("Cet avion ne contient pas de piece a supprimer");
+                        break;
+                    default:
+                        System.out.println("Saisir un nombre du tableau");
+                        break;
+                }
+            }
         }
     }
 
@@ -210,7 +145,7 @@ public class Main {
      * Displays all the plane
      */
     public static void displayAllPlane() {
-        displayPlane(new ArrayList<>(planes.keySet()));
+        Plane.displayPlane(new ArrayList<>(Plane.planes.keySet()));
     }
 
     /**
@@ -221,12 +156,12 @@ public class Main {
      */
     public static List<Integer> searchPlane(String search) {
         ArrayList<Integer> res = new ArrayList<>();
-        for (int idPlane : planes.keySet()) {
-            int[] plane = planes.get(idPlane);
+        for (int idPlane : Plane.planes.keySet()) {
+            int[] plane = Plane.planes.get(idPlane);
             String stringIdPlane = String.valueOf(idPlane);
-            String programme = programmes[plane[0]];
-            String phase = phases[plane[1]];
-            String type = types[plane[2]];
+            String programme = Plane.programmes[plane[0]];
+            String phase = Plane.phases[plane[1]];
+            String type = Plane.types[plane[2]];
             if (stringIdPlane.toUpperCase().contains(search.toUpperCase()) || programme.toUpperCase().contains(search.toUpperCase()) || phase.toUpperCase().contains(search.toUpperCase()) || type.toUpperCase().contains(search.toUpperCase())) {
                 res.add(idPlane);
             }
@@ -236,24 +171,35 @@ public class Main {
 
 
     /**
-     * Generate x planes
+     * Function that return a number between min and max that have been input by user
      *
-     * @param numberOfPlane
-     * @param random
+     * @param scanner
+     * @param message
+     * @param min
+     * @param max
+     * @return
      */
-    public static void generateRandomPlane(int numberOfPlane, Random random) {
-        int numberOfPlaneGenerated = 0;
-        while (numberOfPlaneGenerated < numberOfPlane) {
-            int randomId = random.nextInt(10000);
-            if (!planes.containsKey(randomId)) {
-                int[] paramPlane = new int[3];
-                paramPlane[0] = random.nextInt(programmes.length);
-                paramPlane[1] = random.nextInt(phases.length);
-                paramPlane[2] = random.nextInt(types.length);
-                planes.put(randomId, paramPlane);
-                numberOfPlaneGenerated++;
+    public static Integer inputIntegerBetween(Scanner scanner, String message, int min, int max) {
+        Integer res = null;
+        while (res == null) {
+            System.out.println(message);
+            String stringInput = scanner.next();
+            if(stringInput.equals("q")) {
+                return  null;
+            }
+            try {
+                res = Integer.valueOf(stringInput);
+            } catch (Exception e) {
+                System.out.println("Veuillez entrez un nombre valide");
+            }
+            if (res != null) {
+                if (res < min || res > max) {
+                    res = null;
+                    System.out.println("Veuillez entrez un nombre entre " + min + " et " + max);
+                }
             }
         }
+        return res;
     }
 
     /**
@@ -265,25 +211,23 @@ public class Main {
         Random random = new Random();
         Scanner scanner = new Scanner(System.in);
 
-        int[] plane1 = {1, 1, 1};
-        int[] plane2 = {2, 2, 2};
-        Object[] piece1 = {"Aile droite 1425", "Aile droite", 5.05};
-        planes.put(8742, plane1);
-        planes.put(8772, plane2);
-        ArrayList<Object[]> plane1Piece = new ArrayList<>();
-        plane1Piece.add(piece1);
-        piecesPerPlane.put(8772, plane1Piece);
-        generateRandomPlane(10, random);
+        Part.initListOfPiece();
+        Plane.generateRandomPlane(10, random);
+
         boolean quitProgram = false;
         while (!quitProgram) {
             System.out.println("Que souhaitez vous effectuez");
             System.out.println("1- Afficher tous les avions");
             System.out.println("2- Afficher une liste d'avion a partir d'une recherce");
             System.out.println("3- Voir les pieces pour un avion");
-            System.out.println("4- Arreter le programme");
+            System.out.println("q- Arreter le programme");
 
-            if (scanner.hasNextInt()) {
-                int inputInt = scanner.nextInt();
+            Integer inputInt = inputIntegerBetween(scanner, "Veuillez entrez votre choix: ", 1, 3);
+            if(inputInt == null) {
+                quitProgram = true;
+                break;
+            }
+            else {
                 switch (inputInt) {
                     case 1:
                         displayAllPlane();
@@ -292,31 +236,24 @@ public class Main {
                         System.out.println("Veuillez entrez votre saisie");
                         String search = scanner.next();
                         List<Integer> resSearch = searchPlane(search);
-                        displayPlane(resSearch);
+                        Plane.displayPlane(resSearch);
                         break;
                     case 3:
                         displayAllPlane();
-                        System.out.println("Veuillez entrez l'identifiant de l'avion");
-                        if (scanner.hasNextInt()) {
-                            int planeKey = scanner.nextInt();
-                            if (planes.containsKey(planeKey)) {
-                                displayAllPiece(scanner, planeKey);
+                        System.out.println("");
+                        Integer planeKey = inputIntegerBetween(scanner, "Veuillez entrez l'identifiant de l'avion", 0 , Integer.MAX_VALUE);
+                        if(planeKey != null) {
+                            if (Plane.planes.containsKey(planeKey)) {
+                                displayPieceForPlane(scanner, planeKey);
                             } else {
                                 System.out.println("Nous n'avons pas trouvé d'avions avec cet identifiant " + planeKey);
                             }
-                        } else {
-                            System.out.println("Un identifiant d'avion est attendu");
                         }
-                        break;
-                    case 4:
-                        quitProgram = true;
                         break;
                     default:
                         System.out.println("Votre nombre ne se trouve pas dans la liste");
                         break;
                 }
-            } else {
-                System.out.println("Veuillez saisir un nombre");
             }
         }
         scanner.close();
