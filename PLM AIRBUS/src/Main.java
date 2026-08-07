@@ -42,21 +42,17 @@ public class Main {
         Part.displayAllPieces();
         Integer idPieceToAddToPlace = Main.inputIntegerBetween(scanner, "Quel pièce souhaitez vous ajoutez? ", 0, Part.parts.size());
         if (idPieceToAddToPlace != null) {
-            if (idPieceToAddToPlace == 0) {
-                System.out.println("Creation dune toute nouvelle piece");
-            } else {
-                Integer price = Main.inputIntegerBetween(scanner, "Quel est le prix de cette piece ? ", 0, Integer.MAX_VALUE);
-                if (price != null) {
-                    Object[] part = new Object[2];
-                    part[0] = Part.parts.get(idPieceToAddToPlace - 1);
-                    part[1] = price;
-                    if (partsPerPlane.containsKey(idAvion)) {
-                        partsPerPlane.get(idAvion).add(part);
-                    } else {
-                        ArrayList<Object[]> listPiece = new ArrayList<>();
-                        listPiece.add(part);
-                        partsPerPlane.put(idAvion, listPiece);
-                    }
+            Integer price = Main.inputIntegerBetween(scanner, "Quel est le prix de cette piece ? ", 0, Integer.MAX_VALUE);
+            if (price != null) {
+                Object[] part = new Object[2];
+                part[0] = Part.parts.get(idPieceToAddToPlace - 1);
+                part[1] = price;
+                if (partsPerPlane.containsKey(idAvion)) {
+                    partsPerPlane.get(idAvion).add(part);
+                } else {
+                    ArrayList<Object[]> listPiece = new ArrayList<>();
+                    listPiece.add(part);
+                    partsPerPlane.put(idAvion, listPiece);
                 }
             }
         }
@@ -73,7 +69,7 @@ public class Main {
         System.out.println("❌ RETRAIT D'UNE PIÈCE – SÉLECTION");
         System.out.println("============================================================");
         System.out.println(formatString("id", 4) + " | " + "Name");
-        System.out.println(repeat("-",4) + "-+--------------------------------");
+        System.out.println(repeat("-", 4) + "-+--------------------------------");
         for (int i = 0; i < partsPerPlane.get(idPlane).size(); i++) {
             String[] part = (String[]) partsPerPlane.get(idPlane).get(i)[0];
             System.out.println(formatString(String.valueOf(i), 4) + " | " + part[0]);
@@ -247,9 +243,11 @@ public class Main {
             System.out.println("1- Afficher tous les avions");
             System.out.println("2- Afficher une liste d'avion a partir d'une recherce");
             System.out.println("3- Voir les pieces pour un avion");
+            System.out.println("4- Creer une nouvelle pièce");
+            System.out.println("5- Supprimer une piece completement");
             System.out.println("q- Arreter le programme");
 
-            Integer inputInt = inputIntegerBetween(scanner, "Veuillez entrez votre choix: ", 1, 3);
+            Integer inputInt = inputIntegerBetween(scanner, "Veuillez entrez votre choix: ", 1, 5);
             if (inputInt == null) {
                 quitProgram = true;
                 break;
@@ -274,6 +272,12 @@ public class Main {
                                 System.out.println("Nous n'avons pas trouvé d'avions avec cet identifiant " + planeKey);
                             }
                         }
+                        break;
+                    case 4:
+                        Part.inputCreatePart(scanner);
+                        break;
+                    case 5:
+                        Part.deletePart(scanner);
                         break;
                     default:
                         System.out.println("Votre nombre ne se trouve pas dans la liste");

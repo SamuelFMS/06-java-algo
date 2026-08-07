@@ -52,12 +52,6 @@ public class Part {
         System.out.println(Main.formatString("Category", colCategory));
 
         /*
-            Fist line special
-         */
-        System.out.print(Main.formatString("0", colNumero) + " | ");
-        System.out.println("Creer une toute nouvelle piece");
-
-        /*
             Body Table
          */
         for (String[] part : parts) {
@@ -69,42 +63,38 @@ public class Part {
     }
 
     /**
+     * Delete a part from parts
      * @param scanner
-     * @param idAvion
-     * @deprecated This method is obsolete and must be remade.
+     */
+    public static void deletePart(Scanner scanner){
+        displayAllPieces();
+        System.out.println("");
+        Integer pieceIdToDelete = Main.inputIntegerBetween(scanner,
+                "Quelle pièce souhaitez-vous supprimer ? (Tapez 'q' pour annuler)"
+                ,1,
+                parts.size());
+        if(pieceIdToDelete != null){
+            parts.remove(pieceIdToDelete-1);
+        }
+    }
+
+    /**
+     * @param scanner
      * Create a part with user input
      */
-    @Deprecated
-    public static void inputCreatePiece(Scanner scanner, int idAvion) {
+    public static void inputCreatePart(Scanner scanner) {
         System.out.println("Veuillez saisir le nom de la piece");
         String namePiece = scanner.nextLine();
-        System.out.println("Veuillez saisir la categorie de la piece");
-        String categoryPiece = scanner.nextLine();
-        System.out.println("Veuillez saisir le prix de la piece");
-        boolean isInputFloat = false;
-        float pricePiece = 0;
-        while (!isInputFloat) {
-            if (scanner.hasNextFloat()) {
-                isInputFloat = true;
-                pricePiece = scanner.nextFloat();
-            } else {
-                System.out.println("Un float est attendu ici");
-                scanner.next();
+        while (namePiece.isEmpty()) {
+            namePiece = scanner.nextLine();
+        }
+
+        if(!namePiece.equalsIgnoreCase("q")) {
+            System.out.println("Veuillez saisir la categorie de la piece");
+            String categoryPiece = scanner.nextLine();
+            if(!categoryPiece.equalsIgnoreCase("q")) {
+                parts.add(createAObjectPiece(namePiece, categoryPiece));
             }
         }
-        Object[] res = new Object[3];
-        res[0] = namePiece;
-        res[1] = categoryPiece;
-        res[2] = pricePiece;
-
-        if (Main.partsPerPlane.containsKey(idAvion)) {
-            Main.partsPerPlane.get(idAvion).add(res);
-        } else {
-            ArrayList<Object[]> listPieces = new ArrayList<>();
-            listPieces.add(res);
-            Main.partsPerPlane.put(idAvion, listPieces);
-        }
-
-
     }
 }
