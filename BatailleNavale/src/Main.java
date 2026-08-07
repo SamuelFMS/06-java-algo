@@ -32,8 +32,7 @@ public class Main {
     public static void displayCell(Object[] cell) {
         if (cell[0] == StateCell.EMPTY) {
             if (cell[1] != null) {
-                System.out.print(cell[1]);// See the all the boats
-                //System.out.print(" ");
+                System.out.print(" ");
             } else {
                 System.out.print(" ");
             }
