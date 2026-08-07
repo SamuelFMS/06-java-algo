@@ -6,6 +6,7 @@ import java.util.Scanner;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static final String LIGHT_GRAY = "\u001B[38;5;250m";
+    public static final String ANSI_RED = "\u001B[31m";
     public static final String RESET = "\u001B[0m";
 
     /**
@@ -77,7 +78,7 @@ public class Main {
             }
         } else {
             numberOfTry--;
-            System.out.println("Dommage ! La lettre '" + a + "' n'est pas dans le mot. Il vous reste " + numberOfTry + " essais.");
+            System.out.println("Dommage ! La lettre '" + a + "' n'est pas dans le mot. Il vous reste "+ ANSI_RED + numberOfTry + RESET + " essais.");
         }
         return String.valueOf(newString);
     }
@@ -116,6 +117,34 @@ public class Main {
         System.out.println();
     }
 
+    public static void displayHangman() {
+        int step = 6-numberOfTry;
+        System.out.println(step);
+
+        // First Line
+        System.out.println(" +---+");
+        // Second Line
+        System.out.println(" |   |");
+        // Third Line
+        System.out.print(" ");
+        System.out.print(step>=1?"O":" "); // step 1: the head
+        System.out.println("   |");
+        // Fourth Line
+        System.out.print(step>=3?"/":" "); // Step 3: Left Arm
+        System.out.print(step >= 2 ? "|": " "); // step 2: body trunc
+        System.out.print(step >= 4 ? "\\": " "); // step 4: right arm
+        System.out.println("  |");
+        // Fifth Line
+        System.out.print(step>=5?"/":" "); // step 5 : left leg
+        System.out.print(" ");
+        System.out.print(step >=6?"\\":" "); // step 6 : right leg
+        System.out.println("  |");
+        // Sixth Line
+        System.out.println("     |");
+        // Seven Line
+        System.out.println("=========");
+    }
+
     /**
      * Main method
      * @param args
@@ -123,10 +152,10 @@ public class Main {
     public static void main(String[] args) {
         Random random = new Random();
         Scanner scanner = new Scanner(System.in);
-
         String wordToFind = randomWord(random);
         String hiddenWord = hideString(wordToFind);
         while (!isGameFinished(wordToFind, hiddenWord)) {
+            displayHangman();
             System.out.println("Mot Mystère :" + hiddenWord);
             displayRemainingLetter();
             char inputChar = inputLetter(scanner);
@@ -137,6 +166,7 @@ public class Main {
         if (wordToFind.equalsIgnoreCase(hiddenWord)) {
             System.out.println("Félicitations ! Vous avez gagné ! Vous avez trouvé le mot secret : " + wordToFind);
         } else {
+            displayHangman();
             System.out.println("Dommage, vous avez perdu ! Le mot secret était : " + wordToFind);
         }
 
