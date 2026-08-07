@@ -210,6 +210,11 @@ public class Main {
         Random random = new Random();
         Scanner scanner = new Scanner(System.in);
 
+        System.out.println("==================================================");
+        System.out.println("  BIENVENUE DANS VOTRE GESTIONNAIRE D'AVIONS");
+        Plane.displayDrawingPlane();
+        System.out.println("==================================================");
+        System.out.println();
         Part.initListOfPiece();
         Plane.generateRandomPlane(10, random);
 
