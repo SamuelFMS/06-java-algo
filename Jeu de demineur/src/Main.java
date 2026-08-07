@@ -105,6 +105,9 @@ public class Main {
         return couleur;
     }
 
+    /**
+     * Display the grid with the answer
+     */
     public static void displayEndGame() {
         /*
          * Header
@@ -412,12 +415,46 @@ public class Main {
             }
         }
         if (boardExplode) {
+            displayGameOver();
             System.out.println("\uD83D\uDCA5 " + ANSI_RED + "Vous avez perdu, vous avez provoquer une explosion" + ANSI_RESET + "\uD83D\uDCA5");
         } else if (!allBombHaveNotBeenRevealed) {
+            displayVictory();
             System.out.println(ANSI_GREEN + "🎉 VICTOIRE ! Félicitations, vous avez déminé le terrain avec succès ! 🎉" + ANSI_RESET);
         }
         return boardExplode || !allBombHaveNotBeenRevealed;
     }
+
+    /**
+     * Display a victory drawing
+     */
+    public static void displayVictory(){
+        System.out.println("       _____________");
+        System.out.println("     .-\\           /-.");
+        System.out.println("    | (|  VICTOIRE |) |");
+        System.out.println("     '-|           |-'");
+        System.out.println("        \\         /");
+        System.out.println("         )       (");
+        System.out.println("        /_________\\");
+    }
+
+    /**
+     * Display an end game drawing
+     */
+    public static void displayGameOver() {
+        System.out.println("          _ ._  _ , _ ._");
+        System.out.println("        (_ ' ( `  )_  .__)");
+        System.out.println("      ( (  (    )   `)  ) _)");
+        System.out.println("     (__ (_   (_ . _) _) ,__)");
+        System.out.println("         `~~\\ ' . /~~` ");
+        System.out.println("             ;   ;");
+        System.out.println("             /   \\");
+        System.out.println("       _____/_ ___\\_____");
+        System.out.println("      |                 |");
+        System.out.println("      |   G A M E       |");
+        System.out.println("      |   O V E R   💣  |");
+        System.out.println("      |_________________|");
+    }
+
 
     /**
      * Function that return a number between min and max that have been input by user
@@ -455,7 +492,6 @@ public class Main {
     public static void main(String[] args) {
         Random random = new Random();
         Scanner scanner = new Scanner(System.in);
-
         System.out.println("Quelle difficulté souhaitez vous: ");
         System.out.println("1- Facile (5x5 - 5 drapeau)");
         System.out.println("2- Moyen (10x10 - 10 drapeau)");
