@@ -117,6 +117,9 @@ public class Main {
         System.out.println();
     }
 
+    /**
+     * Display the hangman
+     */
     public static void displayHangman() {
         int step = 6-numberOfTry;
         System.out.println(step);
