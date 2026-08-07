@@ -135,7 +135,6 @@ public class Main {
 
         }
         else if(step != 0) {
-            System.out.println(step);
 
             // First Line
             System.out.println(step >= 2 ? " +---+" : ""); // step 2 Support
