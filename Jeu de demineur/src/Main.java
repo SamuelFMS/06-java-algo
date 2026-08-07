@@ -105,6 +105,67 @@ public class Main {
         return couleur;
     }
 
+    public static void displayEndGame() {
+        /*
+         * Header
+         */
+        System.out.print((stateCells.length >= 10 ? " " : "") + "  |");
+        for (int a = 0; a < numberRow; a++) {
+            System.out.print(" " + (char) ('A' + a) + " ");
+            System.out.print("|");
+        }
+        System.out.println();
+
+        /*
+         * Body
+         */
+        int currentLineIndex = 0;
+        for (StateCell[] rowStateCell : stateCells) {
+            int currentRowIndex = 0;
+            /*
+             * Left index
+             */
+            System.out.print((stateCells.length >= 10 ? (currentLineIndex < 10 ? currentLineIndex + " " : currentLineIndex) : currentLineIndex) + " |");
+            /*
+             * Content
+             */
+            for (StateCell stateCell : rowStateCell) {
+                System.out.print(" ");
+                switch (stateCell) {
+                    case EMPTY:
+                        System.out.print(ANSI_DARK_GREY + "■" + ANSI_RESET);
+                        break;
+                    case BOMB:
+                        System.out.print(ANSI_DARK_GREY + "*" + ANSI_RESET);
+                        break;
+                    case EMPTY_CHECKED:
+                        System.out.print(" ");
+                        break;
+                    case BOMB_BESIDE:
+                        int numberOfBomb = numberOfBombBeside(currentLineIndex, currentRowIndex);
+                        System.out.print(colorByNumberOfBombs(numberOfBomb) + numberOfBomb + ANSI_RESET);
+                        break;
+                    case BOMB_FLAG:
+                        System.out.print(ANSI_RED + "⚑" + ANSI_RESET);
+                        break;
+                    case EMPTY_FLAG:
+                        System.out.print(ANSI_RED + "⚐" + ANSI_RESET);
+                        break;
+                    case BOMB_EXPLODE:
+                        System.out.print(ANSI_RED + "✴" + ANSI_RESET);
+                        break;
+                    default:
+                        System.out.print(stateCell);
+                        break;
+                }
+                System.out.print(" |");
+                currentRowIndex++;
+            }
+            System.out.println();
+            currentLineIndex++;
+        }
+    }
+
     /**
      * Display the game board
      */
@@ -136,6 +197,8 @@ public class Main {
                 System.out.print(" ");
                 switch (stateCell) {
                     case EMPTY:
+                        System.out.print(ANSI_DARK_GREY + "■" + ANSI_RESET);
+                        break;
                     case BOMB:
                         System.out.print(ANSI_DARK_GREY + "■" + ANSI_RESET);
                         break;
@@ -143,14 +206,14 @@ public class Main {
                         System.out.print(" ");
                         break;
                     case BOMB_BESIDE:
-                        int nombreDeBombe = numberOfBombBeside(currentLineIndex, currentRowIndex);
-                        System.out.print(colorByNumberOfBombs(nombreDeBombe) + nombreDeBombe + ANSI_RESET);
+                        int numberOfBomb = numberOfBombBeside(currentLineIndex, currentRowIndex);
+                        System.out.print(colorByNumberOfBombs(numberOfBomb) + numberOfBomb + ANSI_RESET);
                         break;
                     case BOMB_FLAG:
                         System.out.print(ANSI_RED + "⚑" + ANSI_RESET);
                         break;
                     case EMPTY_FLAG:
-                        System.out.print(ANSI_RED + "⚐" + ANSI_RESET);
+                        System.out.print(ANSI_RED + "⚑" + ANSI_RESET);
                         break;
                     case BOMB_EXPLODE:
                         System.out.print(ANSI_RED + "✴" + ANSI_RESET);
@@ -338,22 +401,22 @@ public class Main {
      */
     public static boolean isGameFinished() {
         boolean boardExplode = false;
-        boolean allHaveNotBeenRevealed = false;
+        boolean allBombHaveNotBeenRevealed = false;
         for (StateCell[] listStateCell : stateCells) {
             for (StateCell stateCell : listStateCell) {
                 if (stateCell == StateCell.BOMB_EXPLODE) {
                     boardExplode = true;
-                } else if (stateCell == StateCell.EMPTY || stateCell == StateCell.BOMB) {
-                    allHaveNotBeenRevealed = true;
+                } else if (stateCell == StateCell.BOMB) {
+                    allBombHaveNotBeenRevealed = true;
                 }
             }
         }
         if (boardExplode) {
             System.out.println("\uD83D\uDCA5 " + ANSI_RED + "Vous avez perdu, vous avez provoquer une explosion" + ANSI_RESET + "\uD83D\uDCA5");
-        } else if (!allHaveNotBeenRevealed) {
+        } else if (!allBombHaveNotBeenRevealed) {
             System.out.println(ANSI_GREEN + "🎉 VICTOIRE ! Félicitations, vous avez déminé le terrain avec succès ! 🎉" + ANSI_RESET);
         }
-        return boardExplode || !allHaveNotBeenRevealed;
+        return boardExplode || !allBombHaveNotBeenRevealed;
     }
 
     /**
@@ -441,7 +504,7 @@ public class Main {
             checkCell(position[0], position[1]);
 
         }
-        displayGame();
+        displayEndGame();
 
         scanner.close();
     }
